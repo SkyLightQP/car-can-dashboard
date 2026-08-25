@@ -9,7 +9,7 @@ import { vehicleInfo } from '@/mocks/vehicle';
 function SidebarBrand() {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-base font-semibold">{vehicleInfo.name}</span>
+      <span className="text-base font-semibold">{vehicleInfo.plateNumber}</span>
       <span className="text-[var(--foreground)]/60 text-xs">{vehicleInfo.model}</span>
     </div>
   );
@@ -25,8 +25,7 @@ export default function DashboardLayout() {
           <SidebarBrand />
           <SidebarNav />
         </div>
-        <div className="flex items-center justify-between rounded-xl px-1">
-          <span className="text-[var(--foreground)]/60 text-xs">{vehicleInfo.plateNumber}</span>
+        <div className="flex items-center justify-end rounded-xl px-1">
           <ThemeToggle />
         </div>
       </aside>
@@ -42,7 +41,7 @@ export default function DashboardLayout() {
                 <Drawer.Dialog>
                   <Drawer.CloseTrigger />
                   <Drawer.Header>
-                    <Drawer.Heading>{vehicleInfo.name}</Drawer.Heading>
+                    <Drawer.Heading>{vehicleInfo.plateNumber}</Drawer.Heading>
                   </Drawer.Header>
                   <Drawer.Body>
                     <SidebarNav onNavigate={drawer.close} />
@@ -51,7 +50,7 @@ export default function DashboardLayout() {
               </Drawer.Content>
             </Drawer.Backdrop>
           </Drawer>
-          <span className="truncate text-sm font-semibold">{vehicleInfo.name}</span>
+          <span className="truncate text-sm font-semibold">{vehicleInfo.plateNumber}</span>
           <ThemeToggle />
         </header>
 
