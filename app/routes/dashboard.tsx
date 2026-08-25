@@ -20,6 +20,7 @@ export function meta(_: Route.MetaArgs) {
 const lastDriveDate = new Date(lastDrive.startedAt).toLocaleString('ko-KR', {
   dateStyle: 'medium',
   timeStyle: 'short',
+  timeZone: 'Asia/Seoul',
 });
 
 export default function Dashboard() {
