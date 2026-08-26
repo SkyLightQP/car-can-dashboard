@@ -1,5 +1,6 @@
 import { Card, Chip, Meter } from '@heroui/react';
 
+import { formatKstDateTime } from '@/libs/datetime';
 import { statusChipColor, statusLabel } from '@/libs/status';
 import type { BatteryReading } from '@/types/dashboard';
 
@@ -7,11 +8,7 @@ const MIN_VOLTAGE = 11.5;
 const MAX_VOLTAGE = 13;
 
 export function BatteryGauge({ reading }: { reading: BatteryReading }) {
-  const measuredAt = new Date(reading.measuredAt).toLocaleString('ko-KR', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-    timeZone: 'Asia/Seoul',
-  });
+  const measuredAt = formatKstDateTime(reading.measuredAt);
 
   return (
     <Card className="flex flex-col gap-5 p-6">

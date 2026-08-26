@@ -1,0 +1,19 @@
+const KST_OFFSET_MINUTES = 9 * 60;
+
+/**
+ * ISO 문자열을 한국 시간 기준의 고정 형식으로 만든다.
+ *
+ * toLocaleString 은 쓰지 않는다. Node 와 브라우저의 ICU 구현이 ko-KR 의
+ * 오전/오후 표기를 다르게 내서(서버 'PM', 클라이언트 '오후') SSR 하이드레이션
+ * 불일치를 일으키기 때문이다. getUTC* 로만 조립해 환경 차이가 개입할 여지를 없앤다.
+ */
+export function formatKstDateTime(iso: string): string {
+  const shifted = new Date(new Date(iso).getTime() + KST_OFFSET_MINUTES * 60_000);
+  const year = shifted.getUTCFullYear();
+  const month = shifted.getUTCMonth() + 1;
+  const day = shifted.getUTCDate();
+  const hour = String(shifted.getUTCHours()).padStart(2, '0');
+  const minute = String(shifted.getUTCMinutes()).padStart(2, '0');
+
+  return `${year}년 ${month}월 ${day}일 ${hour}:${minute}`;
+}

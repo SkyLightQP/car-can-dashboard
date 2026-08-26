@@ -7,6 +7,7 @@ import { BatteryIcon, GaugeIcon, RouteIcon } from '@/components/icons';
 import { MaintenanceAlertList } from '@/components/maintenance-alert-list';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
+import { formatKstDateTime } from '@/libs/datetime';
 import { maintenanceAlerts } from '@/mocks/maintenance';
 import { dailyTrips, lastDrive, weeklySummary } from '@/mocks/trips';
 import { batteryReading, vehicleInfo } from '@/mocks/vehicle';
@@ -17,11 +18,7 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '대시보드 | 차량 대시보드' }];
 }
 
-const lastDriveDate = new Date(lastDrive.startedAt).toLocaleString('ko-KR', {
-  dateStyle: 'medium',
-  timeStyle: 'short',
-  timeZone: 'Asia/Seoul',
-});
+const lastDriveDate = formatKstDateTime(lastDrive.startedAt);
 
 export default function Dashboard() {
   return (

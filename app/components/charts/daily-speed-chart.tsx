@@ -17,10 +17,10 @@ export function DailySpeedChart({ data }: { data: DailyTrip[] }) {
   return (
     <ChartFrame height={260}>
       <ResponsiveContainer height="100%" width="100%">
-        <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+        <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <CartesianGrid stroke="var(--separator)" strokeDasharray="3 3" vertical={false} />
           <XAxis axisLine={false} dataKey="label" tick={axisStyle} tickLine={false} />
-          <YAxis axisLine={false} tick={axisStyle} tickLine={false} unit="km/h" width={62} />
+          <YAxis axisLine={false} tick={axisStyle} tickLine={false} unit="km/h" width={72} />
           <Tooltip contentStyle={tooltipStyle} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
           <Line dataKey="avgSpeedKph" dot={false} name="평균 속도" stroke="var(--accent)" strokeWidth={2} />
