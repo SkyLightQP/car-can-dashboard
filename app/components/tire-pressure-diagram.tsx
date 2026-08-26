@@ -2,22 +2,22 @@ import { Card, Chip } from '@heroui/react';
 
 import { statusChipColor, statusLabel } from '@/libs/status';
 import { cn } from '@/libs/utils';
-import type { StatusLevel, TirePosition, TireReading } from '@/types/dashboard';
+import type { TirePosition, TireReading } from '@/types/dashboard';
 
 const positionOrder: TirePosition[] = ['frontLeft', 'frontRight', 'rearLeft', 'rearRight'];
 
-function tireBorderClass(status: StatusLevel) {
-  if (status === 'critical') return 'border-[var(--danger)]';
-  if (status === 'warning') return 'border-[var(--warning)]';
-  return 'border-[var(--success)]';
-}
+const tireBorderByColor: Record<ReturnType<typeof statusChipColor>, string> = {
+  success: 'border-[var(--success)]',
+  warning: 'border-[var(--warning)]',
+  danger: 'border-[var(--danger)]',
+};
 
 function TireBadge({ reading }: { reading: TireReading }) {
   return (
     <div
       className={cn(
         'flex flex-col items-center justify-center gap-1 rounded-2xl border-2 bg-[var(--surface)] px-4 py-5',
-        tireBorderClass(reading.status)
+        tireBorderByColor[statusChipColor(reading.status)]
       )}
     >
       <span className="text-[var(--foreground)]/60 text-xs">{reading.label}</span>
