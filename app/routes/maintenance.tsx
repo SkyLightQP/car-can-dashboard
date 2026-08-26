@@ -4,7 +4,6 @@ import { MaintenanceAlertList } from '@/components/maintenance-alert-list';
 import { MaintenanceFormModal } from '@/components/maintenance-form-modal';
 import { Section } from '@/components/section';
 import { useMaintenance } from '@/contexts/maintenance-context';
-import { maintenanceAlerts } from '@/mocks/maintenance';
 
 import type { Route } from './+types/maintenance';
 
@@ -13,7 +12,7 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export default function Maintenance() {
-  const { records } = useMaintenance();
+  const { records, alerts } = useMaintenance();
   const sortedRecords = [...records].sort((a, b) => b.performedOn.localeCompare(a.performedOn));
 
   return (
@@ -23,8 +22,8 @@ export default function Maintenance() {
         <p className="text-sm text-[var(--foreground)]/60">예정 알림과 정비 이력</p>
       </header>
 
-      <Section description="주행거리와 일자 기준" title="정비 알림">
-        <MaintenanceAlertList alerts={maintenanceAlerts} />
+      <Section description="정비 이력과 현재 주행거리 기준" title="정비 알림">
+        <MaintenanceAlertList alerts={alerts} />
       </Section>
 
       <Section action={<MaintenanceFormModal />} description="최신순" title="정비 이력">

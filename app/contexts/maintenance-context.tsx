@@ -1,12 +1,15 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 
+import { deriveMaintenanceAlerts } from '@/libs/maintenance-schedule';
 import { initialMaintenanceRecords } from '@/mocks/maintenance';
-import type { MaintenanceRecord } from '@/types/dashboard';
+import { vehicleInfo } from '@/mocks/vehicle';
+import type { MaintenanceAlert, MaintenanceRecord } from '@/types/dashboard';
 
 export type NewMaintenanceRecord = Omit<MaintenanceRecord, 'id'>;
 
 interface MaintenanceContextValue {
   records: MaintenanceRecord[];
+  alerts: MaintenanceAlert[];
   addRecord: (record: NewMaintenanceRecord) => void;
 }
 
@@ -19,7 +22,9 @@ export function MaintenanceProvider({ children }: { children: ReactNode }) {
     setRecords((previous) => [{ ...record, id: `mr-${Date.now()}` }, ...previous]);
   }, []);
 
-  const value = useMemo(() => ({ records, addRecord }), [records, addRecord]);
+  const alerts = useMemo(() => deriveMaintenanceAlerts(records, vehicleInfo.totalDistanceKm), [records]);
+
+  const value = useMemo(() => ({ records, alerts, addRecord }), [records, alerts, addRecord]);
 
   return <MaintenanceContext value={value}>{children}</MaintenanceContext>;
 }

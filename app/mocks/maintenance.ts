@@ -1,10 +1,4 @@
-import type { MaintenanceAlert, MaintenanceRecord } from '@/types/dashboard';
-
-export const maintenanceAlerts: MaintenanceAlert[] = [
-  { id: 'ma-1', item: '브레이크 패드 점검', dueDescription: '권장 주기 320km 초과', status: 'critical' },
-  { id: 'ma-2', item: '엔진오일 교환', dueDescription: '1,200km 남음', status: 'warning' },
-  { id: 'ma-3', item: '타이어 위치 교환', dueDescription: '2026-09-10 예정', status: 'normal' },
-];
+import type { MaintenanceRecord } from '@/types/dashboard';
 
 export const initialMaintenanceRecords: MaintenanceRecord[] = [
   {
@@ -30,5 +24,21 @@ export const initialMaintenanceRecords: MaintenanceRecord[] = [
     odometerKm: 40550,
     costKrw: 640000,
     note: '사계절 타이어로 교체',
+  },
+  {
+    id: 'mr-4',
+    item: '타이어 위치 교환',
+    performedOn: '2026-02-10',
+    odometerKm: 39500,
+    costKrw: 30000,
+    note: '앞뒤 교차 로테이션',
+  },
+  {
+    id: 'mr-5',
+    item: '브레이크 패드 교체',
+    performedOn: '2025-11-20',
+    odometerKm: 27890,
+    costKrw: 210000,
+    note: '전륜만 교체',
   },
 ];

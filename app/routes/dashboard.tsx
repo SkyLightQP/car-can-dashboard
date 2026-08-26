@@ -7,8 +7,8 @@ import { BatteryIcon, GaugeIcon, RouteIcon } from '@/components/icons';
 import { MaintenanceAlertList } from '@/components/maintenance-alert-list';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
+import { useMaintenance } from '@/contexts/maintenance-context';
 import { formatKstDateTime } from '@/libs/datetime';
-import { maintenanceAlerts } from '@/mocks/maintenance';
 import { dailyTrips, lastDrive, weeklySummary } from '@/mocks/trips';
 import { batteryReading, vehicleInfo } from '@/mocks/vehicle';
 
@@ -21,6 +21,8 @@ export function meta(_: Route.MetaArgs) {
 const lastDriveDate = formatKstDateTime(lastDrive.startedAt);
 
 export default function Dashboard() {
+  const { alerts } = useMaintenance();
+
   return (
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-1">
@@ -92,7 +94,7 @@ export default function Dashboard() {
           description="예정된 정비 항목"
           title="정비 알림"
         >
-          <MaintenanceAlertList alerts={maintenanceAlerts} limit={3} />
+          <MaintenanceAlertList alerts={alerts} limit={3} />
         </Section>
       </div>
     </div>
