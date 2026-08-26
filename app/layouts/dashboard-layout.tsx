@@ -4,6 +4,7 @@ import { Outlet } from 'react-router';
 import { MenuIcon } from '@/components/icons';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { MaintenanceProvider } from '@/contexts/maintenance-context';
 import { vehicleInfo } from '@/mocks/vehicle';
 
 function SidebarBrand() {
@@ -19,45 +20,47 @@ export default function DashboardLayout() {
   const drawer = useOverlayState();
 
   return (
-    <div className="flex min-h-dvh">
-      <aside className="hidden w-64 shrink-0 flex-col justify-between border-r border-[var(--border)] p-4 lg:flex">
-        <div className="flex flex-col gap-6">
-          <SidebarBrand />
-          <SidebarNav />
-        </div>
-        <div className="flex items-center justify-end rounded-xl px-1">
-          <ThemeToggle />
-        </div>
-      </aside>
+    <MaintenanceProvider>
+      <div className="flex min-h-dvh">
+        <aside className="hidden w-64 shrink-0 flex-col justify-between border-r border-[var(--border)] p-4 lg:flex">
+          <div className="flex flex-col gap-6">
+            <SidebarBrand />
+            <SidebarNav />
+          </div>
+          <div className="flex items-center justify-end rounded-xl px-1">
+            <ThemeToggle />
+          </div>
+        </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-4 py-3 lg:hidden">
-          <Drawer state={drawer}>
-            <Button aria-label="메뉴 열기" isIconOnly variant="ghost">
-              <MenuIcon className="size-5" />
-            </Button>
-            <Drawer.Backdrop>
-              <Drawer.Content placement="left">
-                <Drawer.Dialog>
-                  <Drawer.CloseTrigger />
-                  <Drawer.Header>
-                    <Drawer.Heading>{vehicleInfo.plateNumber}</Drawer.Heading>
-                  </Drawer.Header>
-                  <Drawer.Body>
-                    <SidebarNav onNavigate={drawer.close} />
-                  </Drawer.Body>
-                </Drawer.Dialog>
-              </Drawer.Content>
-            </Drawer.Backdrop>
-          </Drawer>
-          <span className="truncate text-sm font-semibold">{vehicleInfo.plateNumber}</span>
-          <ThemeToggle />
-        </header>
+        <div className="flex min-w-0 flex-1 flex-col">
+          <header className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-4 py-3 lg:hidden">
+            <Drawer state={drawer}>
+              <Button aria-label="메뉴 열기" isIconOnly variant="ghost">
+                <MenuIcon className="size-5" />
+              </Button>
+              <Drawer.Backdrop>
+                <Drawer.Content placement="left">
+                  <Drawer.Dialog>
+                    <Drawer.CloseTrigger />
+                    <Drawer.Header>
+                      <Drawer.Heading>{vehicleInfo.plateNumber}</Drawer.Heading>
+                    </Drawer.Header>
+                    <Drawer.Body>
+                      <SidebarNav onNavigate={drawer.close} />
+                    </Drawer.Body>
+                  </Drawer.Dialog>
+                </Drawer.Content>
+              </Drawer.Backdrop>
+            </Drawer>
+            <span className="truncate text-sm font-semibold">{vehicleInfo.plateNumber}</span>
+            <ThemeToggle />
+          </header>
 
-        <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
-          <Outlet />
-        </main>
+          <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+            <Outlet />
+          </main>
+        </div>
       </div>
-    </div>
+    </MaintenanceProvider>
   );
 }
