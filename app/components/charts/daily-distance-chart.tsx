@@ -16,7 +16,7 @@ const tooltipStyle = {
 
 export function DailyDistanceChart({ data }: { data: DailyTrip[] }) {
   return (
-    <ChartFrame height={260}>
+    <ChartFrame height={260} label="최근 14일 일일 주행거리 차트">
       <ResponsiveContainer height="100%" width="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
           <CartesianGrid stroke="var(--separator)" strokeDasharray="3 3" vertical={false} />

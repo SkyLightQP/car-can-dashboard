@@ -13,7 +13,7 @@ export function meta(_: Route.MetaArgs) {
 
 const totalDistanceKm = dailyTrips.reduce((sum, trip) => sum + trip.distanceKm, 0);
 const drivenDays = dailyTrips.filter((trip) => trip.distanceKm > 0).length;
-const peakSpeedKph = Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph));
+const peakSpeedKph = dailyTrips.length ? Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph)) : 0;
 
 // 최신 날짜가 위로 오도록 뒤집는다. mock 배열 자체는 건드리지 않는다.
 const rows = [...dailyTrips].reverse();
@@ -27,7 +27,7 @@ export default function Trips() {
       </header>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard hint="14일 합계" label="총 주행거리" unit="km" value={totalDistanceKm.toFixed(1)} />
+        <StatCard hint="14일 합계" label="14일 주행거리" unit="km" value={totalDistanceKm.toFixed(1)} />
         <StatCard hint="14일 중" label="주행한 날" unit="일" value={String(drivenDays)} />
         <StatCard hint="14일 최고" label="최고 속도" unit="km/h" value={String(peakSpeedKph)} />
         <StatCard

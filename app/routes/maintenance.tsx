@@ -14,6 +14,7 @@ export function meta(_: Route.MetaArgs) {
 
 export default function Maintenance() {
   const { records } = useMaintenance();
+  const sortedRecords = [...records].sort((a, b) => b.performedOn.localeCompare(a.performedOn));
 
   return (
     <div className="flex flex-col gap-8">
@@ -28,7 +29,7 @@ export default function Maintenance() {
 
       <Section action={<MaintenanceFormModal />} description="최신순" title="정비 이력">
         <ul className="flex flex-col gap-3">
-          {records.map((record) => (
+          {sortedRecords.map((record) => (
             <li key={record.id}>
               <Card className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex min-w-0 flex-col gap-1">

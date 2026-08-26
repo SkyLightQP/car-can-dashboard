@@ -16,7 +16,7 @@ const tooltipStyle = {
 
 export function BatteryTrendChart({ data }: { data: BatteryHistoryPoint[] }) {
   return (
-    <ChartFrame height={180}>
+    <ChartFrame height={180} label="최근 7일 배터리 전압 추이 차트">
       <ResponsiveContainer height="100%" width="100%">
         <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <CartesianGrid stroke="var(--separator)" strokeDasharray="3 3" vertical={false} />

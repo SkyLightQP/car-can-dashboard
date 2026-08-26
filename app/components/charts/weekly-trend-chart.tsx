@@ -16,7 +16,7 @@ const tooltipStyle = {
 
 export function WeeklyTrendChart({ data }: { data: WeeklyPoint[] }) {
   return (
-    <ChartFrame height={240}>
+    <ChartFrame height={240} label="최근 6주 주간 주행거리 추이 차트">
       <ResponsiveContainer height="100%" width="100%">
         <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
           <defs>

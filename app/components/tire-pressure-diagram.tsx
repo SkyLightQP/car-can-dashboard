@@ -16,7 +16,7 @@ function TireBadge({ reading }: { reading: TireReading }) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-1 rounded-2xl border-2 bg-[var(--surface)] px-4 py-5',
+        'relative flex flex-col items-center justify-center gap-1 rounded-2xl border-2 bg-[var(--surface)] px-4 py-5',
         tireBorderByColor[statusChipColor(reading.status)]
       )}
     >

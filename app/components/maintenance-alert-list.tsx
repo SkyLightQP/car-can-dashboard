@@ -1,7 +1,7 @@
 import { Card, Chip } from '@heroui/react';
 
 import { AlertIcon } from '@/components/icons';
-import { statusChipColor, statusLabel } from '@/libs/status';
+import { compareByStatus, statusChipColor, statusLabel } from '@/libs/status';
 import type { MaintenanceAlert } from '@/types/dashboard';
 
 interface MaintenanceAlertListProps {
@@ -10,7 +10,7 @@ interface MaintenanceAlertListProps {
 }
 
 export function MaintenanceAlertList({ alerts, limit }: MaintenanceAlertListProps) {
-  const visible = typeof limit === 'number' ? alerts.slice(0, limit) : alerts;
+  const visible = typeof limit === 'number' ? [...alerts].sort(compareByStatus).slice(0, limit) : alerts;
 
   return (
     <ul className="flex flex-col gap-3">

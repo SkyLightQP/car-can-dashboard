@@ -8,7 +8,13 @@ const KST_OFFSET_MINUTES = 9 * 60;
  * 불일치를 일으키기 때문이다. getUTC* 로만 조립해 환경 차이가 개입할 여지를 없앤다.
  */
 export function formatKstDateTime(iso: string): string {
-  const shifted = new Date(new Date(iso).getTime() + KST_OFFSET_MINUTES * 60_000);
+  const time = new Date(iso).getTime();
+
+  if (Number.isNaN(time)) {
+    return '';
+  }
+
+  const shifted = new Date(time + KST_OFFSET_MINUTES * 60_000);
   const year = shifted.getUTCFullYear();
   const month = shifted.getUTCMonth() + 1;
   const day = shifted.getUTCDate();
