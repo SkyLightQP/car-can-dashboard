@@ -20,9 +20,9 @@ function TireBadge({ reading }: { reading: TireReading }) {
         tireBorderByColor[statusChipColor(reading.status)]
       )}
     >
-      <span className="text-[var(--foreground)]/60 text-xs">{reading.label}</span>
+      <span className="text-xs text-[var(--foreground)]/60">{reading.label}</span>
       <span className="text-2xl font-semibold tabular-nums">{reading.pressurePsi.toFixed(1)}</span>
-      <span className="text-[var(--foreground)]/50 text-xs">psi · 권장 {reading.recommendedPsi}</span>
+      <span className="text-xs text-[var(--foreground)]/50">psi · 권장 {reading.recommendedPsi}</span>
       <Chip color={statusChipColor(reading.status)} size="sm" variant="soft">
         <Chip.Label>{statusLabel(reading.status)}</Chip.Label>
       </Chip>
@@ -47,7 +47,7 @@ export function TirePressureDiagram({ readings }: { readings: TireReading[] }) {
           return <TireBadge key={position} reading={reading} />;
         })}
       </div>
-      <p className="text-[var(--foreground)]/50 mt-6 text-center text-xs">차량을 위에서 본 배치입니다</p>
+      <p className="mt-6 text-center text-xs text-[var(--foreground)]/50">차량을 위에서 본 배치입니다</p>
     </Card>
   );
 }

@@ -20,12 +20,12 @@ export function StatCard({ label, value, unit, hint, changePct, icon, className 
   return (
     <Card className={cn('p-5', className)}>
       <div className="flex items-start justify-between gap-3">
-        <span className="text-[var(--foreground)]/60 text-sm">{label}</span>
+        <span className="text-sm text-[var(--foreground)]/60">{label}</span>
         {icon ? <span className="text-[var(--foreground)]/40">{icon}</span> : null}
       </div>
       <div className="mt-3 flex items-baseline gap-1">
         <span className="text-3xl font-semibold tabular-nums">{value}</span>
-        {unit ? <span className="text-[var(--foreground)]/60 text-sm">{unit}</span> : null}
+        {unit ? <span className="text-sm text-[var(--foreground)]/60">{unit}</span> : null}
       </div>
       {hasChange || hint ? (
         <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -34,7 +34,7 @@ export function StatCard({ label, value, unit, hint, changePct, icon, className 
               <Chip.Label>{`${isUp ? '+' : ''}${changePct.toFixed(1)}%`}</Chip.Label>
             </Chip>
           ) : null}
-          {hint ? <span className="text-[var(--foreground)]/50 text-xs">{hint}</span> : null}
+          {hint ? <span className="text-xs text-[var(--foreground)]/50">{hint}</span> : null}
         </div>
       ) : null}
     </Card>

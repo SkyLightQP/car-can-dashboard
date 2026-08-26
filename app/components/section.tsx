@@ -16,7 +16,7 @@ export function Section({ title, description, action, children, className }: Sec
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-semibold">{title}</h2>
-          {description ? <p className="text-[var(--foreground)]/60 text-sm">{description}</p> : null}
+          {description ? <p className="text-sm text-[var(--foreground)]/60">{description}</p> : null}
         </div>
         {action}
       </div>

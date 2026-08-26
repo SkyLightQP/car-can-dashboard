@@ -20,7 +20,7 @@ export function MaintenanceAlertList({ alerts, limit }: MaintenanceAlertListProp
             <AlertIcon className="size-5 shrink-0 text-[var(--foreground)]/40" />
             <div className="flex min-w-0 flex-1 flex-col gap-0.5">
               <span className="truncate text-sm font-medium">{alert.item}</span>
-              <span className="text-[var(--foreground)]/60 text-xs">{alert.dueDescription}</span>
+              <span className="text-xs text-[var(--foreground)]/60">{alert.dueDescription}</span>
             </div>
             <Chip color={statusChipColor(alert.status)} size="sm" variant="soft">
               <Chip.Label>{statusLabel(alert.status)}</Chip.Label>

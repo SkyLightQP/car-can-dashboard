@@ -18,7 +18,7 @@ export default function Vehicle() {
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">차량 상태</h1>
-        <p className="text-[var(--foreground)]/60 text-sm">
+        <p className="text-sm text-[var(--foreground)]/60">
           {vehicleInfo.model} · {vehicleInfo.plateNumber}
         </p>
       </header>

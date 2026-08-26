@@ -11,7 +11,7 @@ function SidebarBrand() {
   return (
     <div className="flex flex-col gap-0.5">
       <span className="text-base font-semibold">{vehicleInfo.plateNumber}</span>
-      <span className="text-[var(--foreground)]/60 text-xs">{vehicleInfo.model}</span>
+      <span className="text-xs text-[var(--foreground)]/60">{vehicleInfo.model}</span>
     </div>
   );
 }

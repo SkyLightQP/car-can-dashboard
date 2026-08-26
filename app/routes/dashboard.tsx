@@ -28,7 +28,7 @@ export default function Dashboard() {
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">대시보드</h1>
-        <p className="text-[var(--foreground)]/60 text-sm">최근 14일 주행 데이터 기준</p>
+        <p className="text-sm text-[var(--foreground)]/60">최근 14일 주행 데이터 기준</p>
       </header>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -88,7 +88,7 @@ export default function Dashboard() {
 
         <Section
           action={
-            <Link className="text-[var(--link)] text-sm underline-offset-4 hover:underline" to="/maintenance">
+            <Link className="text-sm text-[var(--link)] underline-offset-4 hover:underline" to="/maintenance">
               전체 보기
             </Link>
           }

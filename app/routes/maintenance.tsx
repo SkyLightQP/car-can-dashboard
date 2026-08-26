@@ -19,7 +19,7 @@ export default function Maintenance() {
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">정비</h1>
-        <p className="text-[var(--foreground)]/60 text-sm">예정 알림과 정비 이력</p>
+        <p className="text-sm text-[var(--foreground)]/60">예정 알림과 정비 이력</p>
       </header>
 
       <Section description="주행거리와 일자 기준" title="정비 알림">
@@ -33,10 +33,10 @@ export default function Maintenance() {
               <Card className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex min-w-0 flex-col gap-1">
                   <span className="font-medium">{record.item}</span>
-                  <span className="text-[var(--foreground)]/60 text-xs">
+                  <span className="text-xs text-[var(--foreground)]/60">
                     {record.performedOn} · {record.odometerKm.toLocaleString('ko-KR')} km
                   </span>
-                  {record.note ? <span className="text-[var(--foreground)]/50 text-xs">{record.note}</span> : null}
+                  {record.note ? <span className="text-xs text-[var(--foreground)]/50">{record.note}</span> : null}
                 </div>
                 <span className="shrink-0 text-sm font-semibold tabular-nums">
                   {record.costKrw.toLocaleString('ko-KR')}원

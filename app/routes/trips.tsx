@@ -23,7 +23,7 @@ export default function Trips() {
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">주행 기록</h1>
-        <p className="text-[var(--foreground)]/60 text-sm">최근 14일 일별 기록</p>
+        <p className="text-sm text-[var(--foreground)]/60">최근 14일 일별 기록</p>
       </header>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">

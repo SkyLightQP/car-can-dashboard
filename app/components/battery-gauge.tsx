@@ -17,10 +17,10 @@ export function BatteryGauge({ reading }: { reading: BatteryReading }) {
     <Card className="flex flex-col gap-5 p-6">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <span className="text-[var(--foreground)]/60 text-sm">현재 전압</span>
+          <span className="text-sm text-[var(--foreground)]/60">현재 전압</span>
           <div className="flex items-baseline gap-1">
             <span className="text-4xl font-semibold tabular-nums">{reading.voltage.toFixed(1)}</span>
-            <span className="text-[var(--foreground)]/60 text-base">V</span>
+            <span className="text-base text-[var(--foreground)]/60">V</span>
           </div>
         </div>
         <Chip color={statusChipColor(reading.status)} size="md" variant="soft">
@@ -40,7 +40,7 @@ export function BatteryGauge({ reading }: { reading: BatteryReading }) {
         </Meter.Track>
       </Meter>
 
-      <div className="text-[var(--foreground)]/50 flex justify-between text-xs">
+      <div className="flex justify-between text-xs text-[var(--foreground)]/50">
         <span>{MIN_VOLTAGE.toFixed(1)}V</span>
         <span>측정 {measuredAt}</span>
         <span>{MAX_VOLTAGE.toFixed(1)}V</span>
