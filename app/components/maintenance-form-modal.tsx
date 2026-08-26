@@ -1,4 +1,14 @@
-import { Button, Input, Label, Modal, TextArea, TextField, useOverlayState } from '@heroui/react';
+import {
+  Button,
+  FieldError,
+  Input,
+  Label,
+  Modal,
+  NumberField,
+  TextArea,
+  TextField,
+  useOverlayState,
+} from '@heroui/react';
 import { useState } from 'react';
 
 import { PlusIcon } from '@/components/icons';
@@ -7,45 +17,59 @@ import { useMaintenance } from '@/contexts/maintenance-context';
 interface FormState {
   item: string;
   performedOn: string;
-  odometerKm: string;
-  costKrw: string;
+  odometerKm: number;
+  costKrw: number;
   note: string;
 }
 
 const emptyForm: FormState = {
   item: '',
   performedOn: '',
-  odometerKm: '',
-  costKrw: '',
+  odometerKm: NaN,
+  costKrw: NaN,
   note: '',
 };
 
 export function MaintenanceFormModal() {
-  const state = useOverlayState();
-  const { addRecord } = useMaintenance();
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const { addRecord } = useMaintenance();
 
-  const update = (key: keyof FormState) => (value: string) => {
+  const state = useOverlayState({
+    onOpenChange: (isOpen) => {
+      if (!isOpen) {
+        setForm(emptyForm);
+        setSubmitted(false);
+      }
+    },
+  });
+
+  const isItemInvalid = submitted && !form.item.trim();
+  const isDateInvalid = submitted && !form.performedOn.trim();
+
+  const update = (key: 'item' | 'performedOn' | 'note') => (value: string) => {
+    setForm((previous) => ({ ...previous, [key]: value }));
+  };
+
+  const updateNumber = (key: 'odometerKm' | 'costKrw') => (value: number) => {
     setForm((previous) => ({ ...previous, [key]: value }));
   };
 
   const handleSubmit = () => {
+    setSubmitted(true);
+
     if (!form.item.trim() || !form.performedOn.trim()) {
-      setError('정비 항목과 정비 일자는 필수입니다.');
       return;
     }
 
     addRecord({
       item: form.item.trim(),
       performedOn: form.performedOn.trim(),
-      odometerKm: Number(form.odometerKm) || 0,
-      costKrw: Number(form.costKrw) || 0,
+      odometerKm: Number.isNaN(form.odometerKm) ? 0 : form.odometerKm,
+      costKrw: Number.isNaN(form.costKrw) ? 0 : form.costKrw,
       note: form.note.trim(),
     });
 
-    setForm(emptyForm);
-    setError('');
     state.close();
   };
 
@@ -64,29 +88,39 @@ export function MaintenanceFormModal() {
             </Modal.Header>
             <Modal.Body>
               <div className="flex flex-col gap-4">
-                <TextField isRequired onChange={update('item')} value={form.item}>
+                <TextField isInvalid={isItemInvalid} isRequired onChange={update('item')} value={form.item}>
                   <Label>정비 항목</Label>
                   <Input placeholder="예: 엔진오일 교환" />
+                  <FieldError>정비 항목을 입력해 주세요.</FieldError>
                 </TextField>
-                <TextField isRequired onChange={update('performedOn')} value={form.performedOn}>
+                <TextField
+                  isInvalid={isDateInvalid}
+                  isRequired
+                  onChange={update('performedOn')}
+                  value={form.performedOn}
+                >
                   <Label>정비 일자</Label>
                   <Input type="date" />
+                  <FieldError>정비 일자를 입력해 주세요.</FieldError>
                 </TextField>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <TextField onChange={update('odometerKm')} value={form.odometerKm}>
+                  <NumberField minValue={0} onChange={updateNumber('odometerKm')} value={form.odometerKm}>
                     <Label>주행거리 (km)</Label>
-                    <Input inputMode="numeric" placeholder="48213" />
-                  </TextField>
-                  <TextField onChange={update('costKrw')} value={form.costKrw}>
+                    <NumberField.Group>
+                      <NumberField.Input placeholder="48213" />
+                    </NumberField.Group>
+                  </NumberField>
+                  <NumberField minValue={0} onChange={updateNumber('costKrw')} value={form.costKrw}>
                     <Label>비용 (원)</Label>
-                    <Input inputMode="numeric" placeholder="92000" />
-                  </TextField>
+                    <NumberField.Group>
+                      <NumberField.Input placeholder="92000" />
+                    </NumberField.Group>
+                  </NumberField>
                 </div>
                 <TextField onChange={update('note')} value={form.note}>
                   <Label>메모</Label>
                   <TextArea placeholder="정비소, 사용 부품 등" rows={3} />
                 </TextField>
-                {error ? <p className="text-[var(--danger)] text-sm">{error}</p> : null}
               </div>
             </Modal.Body>
             <Modal.Footer>
