@@ -43,7 +43,13 @@ const serviceRules: ServiceRule[] = [
   },
 ];
 
-/** 규칙에 매칭되는 기록 중 주행거리가 가장 큰 것(=가장 최근 정비)을 고른다. */
+/**
+ * 규칙에 매칭되는 기록 중 주행거리가 가장 큰 것(=가장 최근 정비)을 고른다.
+ *
+ * 규칙마다 독립적으로 훑으므로 한 기록이 여러 규칙에 걸릴 수 있다.
+ * 예: '에어컨 필터 및 브레이크 패드 교체'는 에어컨 필터와 브레이크 패드 알림을
+ * 둘 다 갱신한다. 그 기록이 실제로 두 정비를 담고 있으므로 의도된 동작이다.
+ */
 function findLatestRecord(records: MaintenanceRecord[], rule: ServiceRule): MaintenanceRecord | undefined {
   return records
     .filter((record) => rule.keywords.some((keyword) => record.item.includes(keyword)))
