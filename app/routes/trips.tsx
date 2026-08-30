@@ -1,6 +1,9 @@
 import { Card, Table } from '@heroui/react';
 
+import { ChartCard } from '@/components/chart-card';
 import { WeeklyTrendChart } from '@/components/charts/weekly-trend-chart';
+import { CalendarIcon } from '@/components/icons';
+import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
 import { dailyTrips, weeklySummary, weeklyTrend } from '@/mocks/trips';
@@ -14,17 +17,20 @@ export function meta(_: Route.MetaArgs) {
 const totalDistanceKm = dailyTrips.reduce((sum, trip) => sum + trip.distanceKm, 0);
 const drivenDays = dailyTrips.filter((trip) => trip.distanceKm > 0).length;
 const peakSpeedKph = dailyTrips.length ? Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph)) : 0;
+const weeklyTotalKm = weeklyTrend.reduce((sum, point) => sum + point.distanceKm, 0);
 
 // 최신 날짜가 위로 오도록 뒤집는다. mock 배열 자체는 건드리지 않는다.
 const rows = [...dailyTrips].reverse();
+const period = dailyTrips.length ? `${dailyTrips[0].label} – ${dailyTrips[dailyTrips.length - 1].label}` : '';
 
 export default function Trips() {
   return (
-    <div className="flex flex-col gap-8">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold">주행 기록</h1>
-        <p className="text-sm text-[var(--foreground)]/60">최근 14일 일별 기록</p>
-      </header>
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        actions={<HeaderPill icon={<CalendarIcon className="size-4" />}>{period}</HeaderPill>}
+        eyebrow="최근 14일 일별 기록"
+        title="주행 기록"
+      />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard hint="14일 합계" label="14일 주행거리" unit="km" value={totalDistanceKm.toFixed(1)} />
@@ -39,15 +45,18 @@ export default function Trips() {
         />
       </div>
 
-      <Section description="최근 6주 주행거리" title="주간 추이">
-        <Card className="p-4">
-          <WeeklyTrendChart data={weeklyTrend} />
-        </Card>
-      </Section>
+      <ChartCard hint="최근 6주 합계" label="주간 추이" unit="km" value={weeklyTotalKm.toFixed(0)}>
+        <WeeklyTrendChart data={weeklyTrend} />
+      </ChartCard>
 
       <Section description="최신순" title="일별 기록">
-        <Card className="p-2">
-          <Table>
+        {/*
+          Table 기본값인 variant="primary" 는 회색 컨테이너 안에 흰 본문 카드를 넣는 형태라,
+          Card 로 한 번 더 감싸면 흰색 → 회색 → 흰색 3중 면이 된다.
+          Card 를 유일한 면으로 두고 표는 secondary(배경 없는 납작한 형태)로 쓴다.
+        */}
+        <Card className="p-3">
+          <Table variant="secondary">
             <Table.ScrollContainer>
               <Table.Content aria-label="일별 주행 기록" className="min-w-[640px]">
                 <Table.Header>
@@ -61,9 +70,9 @@ export default function Trips() {
                   {rows.map((trip) => (
                     <Table.Row key={trip.date}>
                       <Table.Cell>{trip.date}</Table.Cell>
-                      <Table.Cell>{trip.distanceKm.toFixed(1)}</Table.Cell>
-                      <Table.Cell>{trip.avgSpeedKph}</Table.Cell>
-                      <Table.Cell>{trip.maxSpeedKph}</Table.Cell>
+                      <Table.Cell className="tabular-nums">{trip.distanceKm.toFixed(1)}</Table.Cell>
+                      <Table.Cell className="tabular-nums">{trip.avgSpeedKph}</Table.Cell>
+                      <Table.Cell className="tabular-nums">{trip.maxSpeedKph}</Table.Cell>
                       <Table.Cell>{trip.drivingMinutes > 0 ? `${trip.drivingMinutes}분` : '주행 없음'}</Table.Cell>
                     </Table.Row>
                   ))}

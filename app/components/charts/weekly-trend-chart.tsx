@@ -2,41 +2,42 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import type { TooltipValueType } from 'recharts';
 
 import { ChartFrame } from '@/components/chart-frame';
+import {
+  axisProps,
+  gridProps,
+  tooltipContentStyle,
+  tooltipItemStyle,
+  tooltipLabelStyle,
+} from '@/components/charts/chart-theme';
 import type { WeeklyPoint } from '@/types/dashboard';
-
-const axisStyle = { fill: 'var(--foreground)', fillOpacity: 0.6, fontSize: 12 };
-
-const tooltipStyle = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 12,
-  color: 'var(--foreground)',
-  fontSize: 12,
-};
 
 export function WeeklyTrendChart({ data }: { data: WeeklyPoint[] }) {
   return (
     <ChartFrame height={240} label="최근 6주 주간 주행거리 추이 차트">
       <ResponsiveContainer height="100%" width="100%">
-        <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+        <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <defs>
             <linearGradient id="weeklyDistanceFill" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.35} />
-              <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.22} />
+              <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid stroke="var(--separator)" strokeDasharray="3 3" vertical={false} />
-          <XAxis axisLine={false} dataKey="weekLabel" tick={axisStyle} tickLine={false} />
-          <YAxis axisLine={false} tick={axisStyle} tickLine={false} width={52} />
+          <CartesianGrid {...gridProps} />
+          <XAxis {...axisProps} dataKey="weekLabel" />
+          <YAxis {...axisProps} width={48} />
           <Tooltip
-            contentStyle={tooltipStyle}
+            contentStyle={tooltipContentStyle}
+            cursor={{ stroke: 'var(--chart-grid)', strokeDasharray: '4 4' }}
             formatter={(value: TooltipValueType | undefined) => [`${value} km`, '주간 주행거리']}
+            itemStyle={tooltipItemStyle}
+            labelStyle={tooltipLabelStyle}
           />
           <Area
+            activeDot={{ r: 4, strokeWidth: 0 }}
             dataKey="distanceKm"
             fill="url(#weeklyDistanceFill)"
             stroke="var(--accent)"
-            strokeWidth={2}
+            strokeWidth={2.5}
             type="monotone"
           />
         </AreaChart>

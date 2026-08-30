@@ -23,3 +23,9 @@ export function formatKstDateTime(iso: string): string {
 
   return `${year}년 ${month}월 ${day}일 ${hour}:${minute}`;
 }
+
+/** 날짜만 필요한 자리(페이지 헤더의 기준일 등)에서 쓰는 짧은 형식. */
+export function formatKstDate(iso: string): string {
+  const formatted = formatKstDateTime(iso);
+  return formatted ? formatted.replace(/ \d{2}:\d{2}$/, '') : '';
+}

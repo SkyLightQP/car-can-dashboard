@@ -15,7 +15,7 @@ export function ChartFrame({ height, children, label }: ChartFrameProps) {
   const isHydrated = useIsHydrated();
 
   if (!isHydrated) {
-    return <Skeleton className="w-full rounded-xl" style={{ height }} />;
+    return <Skeleton className="w-full rounded-2xl" style={{ height }} />;
   }
 
   return (

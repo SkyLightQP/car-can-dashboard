@@ -1,6 +1,7 @@
-import { Card, Chip } from '@heroui/react';
+import { Card } from '@heroui/react';
 import type { ReactNode } from 'react';
 
+import { TrendNote } from '@/components/trend-note';
 import { cn } from '@/libs/utils';
 
 interface StatCardProps {
@@ -10,33 +11,36 @@ interface StatCardProps {
   hint?: string;
   changePct?: number;
   icon?: ReactNode;
+  /** 값을 더 크게 — 페이지의 대표 지표에만 쓴다. */
+  size?: 'md' | 'lg';
   className?: string;
 }
 
-export function StatCard({ label, value, unit, hint, changePct, icon, className }: StatCardProps) {
-  const hasChange = typeof changePct === 'number';
-  const isUp = hasChange && changePct >= 0;
-
+export function StatCard({ label, value, unit, hint, changePct, icon, size = 'md', className }: StatCardProps) {
   return (
-    <Card className={cn('p-5', className)}>
+    <Card className={cn('gap-0 p-5', className)}>
       <div className="flex items-start justify-between gap-3">
-        <span className="text-sm text-[var(--foreground)]/60">{label}</span>
-        {icon ? <span className="text-[var(--foreground)]/40">{icon}</span> : null}
+        <span className="text-[13px] text-[var(--muted)]">{label}</span>
+        {icon ? (
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--foreground)]/[0.05] text-[var(--muted)]">
+            {icon}
+          </span>
+        ) : null}
       </div>
-      <div className="mt-3 flex items-baseline gap-1">
-        <span className="text-3xl font-semibold tabular-nums">{value}</span>
-        {unit ? <span className="text-sm text-[var(--foreground)]/60">{unit}</span> : null}
+
+      <div className="mt-2.5 flex items-baseline gap-1.5">
+        <span
+          className={cn(
+            'font-semibold tracking-tight tabular-nums',
+            size === 'lg' ? 'text-4xl sm:text-[2.75rem]' : 'text-[1.75rem]'
+          )}
+        >
+          {value}
+        </span>
+        {unit ? <span className="text-sm text-[var(--muted)]">{unit}</span> : null}
       </div>
-      {hasChange || hint ? (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          {hasChange ? (
-            <Chip color={isUp ? 'success' : 'danger'} size="sm" variant="soft">
-              <Chip.Label>{`${isUp ? '+' : ''}${changePct.toFixed(1)}%`}</Chip.Label>
-            </Chip>
-          ) : null}
-          {hint ? <span className="text-xs text-[var(--foreground)]/50">{hint}</span> : null}
-        </div>
-      ) : null}
+
+      <TrendNote changePct={changePct} className="mt-3" note={hint} />
     </Card>
   );
 }

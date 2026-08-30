@@ -100,3 +100,56 @@ export function BatteryIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function TrendUpIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <path d="M7 17L17 7" />
+      <path d="M9 7h8v8" />
+    </svg>
+  );
+}
+
+export function TrendDownIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <path d="M7 7l10 10" />
+      <path d="M17 9v8H9" />
+    </svg>
+  );
+}
+
+export function SearchIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </svg>
+  );
+}
+
+export function CalendarIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <rect height="16" rx="3" width="18" x="3" y="5" />
+      <path d="M3 10h18M8 3v4M16 3v4" />
+    </svg>
+  );
+}
+
+export function SparkIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <path d="M12 3l1.9 5.4L19.5 10l-5.6 1.6L12 17l-1.9-5.4L4.5 10l5.6-1.6z" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <path d="M5 12h14" />
+      <path d="M13 6l6 6-6 6" />
+    </svg>
+  );
+}

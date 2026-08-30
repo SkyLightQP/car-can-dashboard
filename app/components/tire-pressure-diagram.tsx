@@ -6,24 +6,26 @@ import type { TirePosition, TireReading } from '@/types/dashboard';
 
 const positionOrder: TirePosition[] = ['frontLeft', 'frontRight', 'rearLeft', 'rearRight'];
 
-const tireBorderByColor: Record<ReturnType<typeof statusChipColor>, string> = {
-  success: 'border-[var(--success)]',
-  warning: 'border-[var(--warning)]',
-  danger: 'border-[var(--danger)]',
+const tireToneByColor: Record<ReturnType<typeof statusChipColor>, string> = {
+  success: 'bg-[var(--success-soft)]',
+  warning: 'bg-[var(--warning-soft)]',
+  danger: 'bg-[var(--danger-soft)]',
 };
 
 function TireBadge({ reading }: { reading: TireReading }) {
+  const tone = statusChipColor(reading.status);
+
   return (
     <div
       className={cn(
-        'relative flex flex-col items-center justify-center gap-1 rounded-2xl border-2 bg-[var(--surface)] px-4 py-5',
-        tireBorderByColor[statusChipColor(reading.status)]
+        'relative flex flex-col items-center justify-center gap-1.5 rounded-3xl px-4 py-6',
+        tireToneByColor[tone]
       )}
     >
-      <span className="text-xs text-[var(--foreground)]/60">{reading.label}</span>
-      <span className="text-2xl font-semibold tabular-nums">{reading.pressurePsi.toFixed(1)}</span>
-      <span className="text-xs text-[var(--foreground)]/50">psi · 권장 {reading.recommendedPsi}</span>
-      <Chip color={statusChipColor(reading.status)} size="sm" variant="soft">
+      <span className="text-xs text-[var(--muted)]">{reading.label}</span>
+      <span className="text-2xl font-semibold tracking-tight tabular-nums">{reading.pressurePsi.toFixed(1)}</span>
+      <span className="text-xs text-[var(--muted)]">psi · 권장 {reading.recommendedPsi}</span>
+      <Chip className="mt-1" color={tone} size="sm" variant="soft">
         <Chip.Label>{statusLabel(reading.status)}</Chip.Label>
       </Chip>
     </div>
@@ -39,7 +41,7 @@ export function TirePressureDiagram({ readings }: { readings: TireReading[] }) {
         {/* 차체 실루엣 — 4개 타이어 사이를 지나는 세로 막대 */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-4 left-1/2 w-20 -translate-x-1/2 rounded-[2.5rem] border border-dashed border-[var(--border)] bg-[var(--foreground)]/[0.03]"
+          className="pointer-events-none absolute inset-y-4 left-1/2 w-20 -translate-x-1/2 rounded-full bg-[var(--foreground)]/[0.04]"
         />
         {positionOrder.map((position) => {
           const reading = byPosition.get(position);
@@ -47,7 +49,7 @@ export function TirePressureDiagram({ readings }: { readings: TireReading[] }) {
           return <TireBadge key={position} reading={reading} />;
         })}
       </div>
-      <p className="mt-6 text-center text-xs text-[var(--foreground)]/50">차량을 위에서 본 배치입니다</p>
+      <p className="mt-6 text-center text-xs text-[var(--muted)]">차량을 위에서 본 배치입니다</p>
     </Card>
   );
 }

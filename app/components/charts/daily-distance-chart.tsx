@@ -1,33 +1,46 @@
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import type { TooltipValueType } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import type { BarShapeProps, TooltipValueType } from 'recharts';
 
 import { ChartFrame } from '@/components/chart-frame';
+import {
+  axisProps,
+  barCursor,
+  barFill,
+  gridProps,
+  tooltipContentStyle,
+  tooltipItemStyle,
+  tooltipLabelStyle,
+} from '@/components/charts/chart-theme';
 import type { DailyTrip } from '@/types/dashboard';
 
-const axisStyle = { fill: 'var(--foreground)', fillOpacity: 0.6, fontSize: 12 };
-
-const tooltipStyle = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 12,
-  color: 'var(--foreground)',
-  fontSize: 12,
-};
+/** recharts 의 payload 는 any 라서, 이 차트가 실제로 읽는 필드만 좁혀 둔다. */
+interface DistanceBarProps extends Omit<BarShapeProps, 'payload'> {
+  payload?: DailyTrip;
+}
 
 export function DailyDistanceChart({ data }: { data: DailyTrip[] }) {
+  const peak = data.length ? Math.max(...data.map((trip) => trip.distanceKm)) : 0;
+
+  // 최댓값 하루만 프라이머리로 세우고 나머지는 중성색으로 눕힌다.
+  const renderBar = ({ payload, ...rest }: DistanceBarProps) => (
+    <Rectangle {...rest} fill={barFill(peak > 0 && payload?.distanceKm === peak)} radius={[8, 8, 8, 8]} />
+  );
+
   return (
     <ChartFrame height={260} label="최근 14일 일일 주행거리 차트">
       <ResponsiveContainer height="100%" width="100%">
-        <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-          <CartesianGrid stroke="var(--separator)" strokeDasharray="3 3" vertical={false} />
-          <XAxis axisLine={false} dataKey="label" tick={axisStyle} tickLine={false} />
-          <YAxis axisLine={false} tick={axisStyle} tickLine={false} width={44} />
+        <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
+          <CartesianGrid {...gridProps} />
+          <XAxis {...axisProps} dataKey="label" interval="preserveStartEnd" />
+          <YAxis {...axisProps} width={44} />
           <Tooltip
-            contentStyle={tooltipStyle}
-            cursor={{ fill: 'var(--foreground)', fillOpacity: 0.06 }}
+            contentStyle={tooltipContentStyle}
+            cursor={barCursor}
             formatter={(value: TooltipValueType | undefined) => [`${value} km`, '주행거리']}
+            itemStyle={tooltipItemStyle}
+            labelStyle={tooltipLabelStyle}
           />
-          <Bar dataKey="distanceKm" fill="var(--accent)" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="distanceKm" shape={renderBar} />
         </BarChart>
       </ResponsiveContainer>
     </ChartFrame>

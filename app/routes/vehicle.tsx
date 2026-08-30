@@ -1,10 +1,12 @@
-import { Card } from '@heroui/react';
-
 import { BatteryGauge } from '@/components/battery-gauge';
+import { ChartCard } from '@/components/chart-card';
 import { BatteryTrendChart } from '@/components/charts/battery-trend-chart';
+import { CalendarIcon } from '@/components/icons';
+import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
 import { TirePressureDiagram } from '@/components/tire-pressure-diagram';
+import { formatKstDate } from '@/libs/datetime';
 import { batteryHistory, batteryReading, tireReadings, vehicleInfo } from '@/mocks/vehicle';
 
 import type { Route } from './+types/vehicle';
@@ -13,15 +15,19 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '차량 상태 | 차량 대시보드' }];
 }
 
+const measuredDate = formatKstDate(batteryReading.measuredAt);
+const averageVoltage = batteryHistory.length
+  ? (batteryHistory.reduce((sum, point) => sum + point.voltage, 0) / batteryHistory.length).toFixed(2)
+  : '—';
+
 export default function Vehicle() {
   return (
-    <div className="flex flex-col gap-8">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold">차량 상태</h1>
-        <p className="text-sm text-[var(--foreground)]/60">
-          {vehicleInfo.model} · {vehicleInfo.plateNumber}
-        </p>
-      </header>
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        actions={<HeaderPill icon={<CalendarIcon className="size-4" />}>{measuredDate} 측정</HeaderPill>}
+        eyebrow={`${vehicleInfo.plateNumber} · ${vehicleInfo.model}`}
+        title="차량 상태"
+      />
 
       <Section description="차량을 위에서 본 배치와 각 휠의 현재 공기압" title="타이어 공기압">
         <TirePressureDiagram readings={tireReadings} />
@@ -41,16 +47,14 @@ export default function Vehicle() {
         </div>
       </Section>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Section description="시동 전 기준" title="배터리 전압">
+      <Section description="시동 전 기준 전압과 최근 7일 추이" title="배터리">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <BatteryGauge reading={batteryReading} />
-        </Section>
-        <Section description="최근 7일" title="전압 추이">
-          <Card className="p-4">
+          <ChartCard hint="최근 7일 평균" label="전압 추이" unit="V" value={averageVoltage}>
             <BatteryTrendChart data={batteryHistory} />
-          </Card>
-        </Section>
-      </div>
+          </ChartCard>
+        </div>
+      </Section>
     </div>
   );
 }

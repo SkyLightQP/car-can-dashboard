@@ -2,31 +2,38 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import type { TooltipValueType } from 'recharts';
 
 import { ChartFrame } from '@/components/chart-frame';
+import {
+  axisProps,
+  gridProps,
+  tooltipContentStyle,
+  tooltipItemStyle,
+  tooltipLabelStyle,
+} from '@/components/charts/chart-theme';
 import type { BatteryHistoryPoint } from '@/types/dashboard';
-
-const axisStyle = { fill: 'var(--foreground)', fillOpacity: 0.6, fontSize: 12 };
-
-const tooltipStyle = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 12,
-  color: 'var(--foreground)',
-  fontSize: 12,
-};
 
 export function BatteryTrendChart({ data }: { data: BatteryHistoryPoint[] }) {
   return (
     <ChartFrame height={180} label="최근 7일 배터리 전압 추이 차트">
       <ResponsiveContainer height="100%" width="100%">
         <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-          <CartesianGrid stroke="var(--separator)" strokeDasharray="3 3" vertical={false} />
-          <XAxis axisLine={false} dataKey="label" tick={axisStyle} tickLine={false} />
-          <YAxis axisLine={false} domain={[11.5, 13]} tick={axisStyle} tickLine={false} unit="V" width={60} />
+          <CartesianGrid {...gridProps} />
+          <XAxis {...axisProps} dataKey="label" />
+          <YAxis {...axisProps} domain={[11.5, 13]} unit="V" width={56} />
           <Tooltip
-            contentStyle={tooltipStyle}
+            contentStyle={tooltipContentStyle}
+            cursor={{ stroke: 'var(--chart-grid)', strokeDasharray: '4 4' }}
             formatter={(value: TooltipValueType | undefined) => [`${value} V`, '전압']}
+            itemStyle={tooltipItemStyle}
+            labelStyle={tooltipLabelStyle}
           />
-          <Line dataKey="voltage" dot={{ r: 3 }} stroke="var(--success)" strokeWidth={2} type="monotone" />
+          <Line
+            activeDot={{ r: 4, strokeWidth: 0 }}
+            dataKey="voltage"
+            dot={{ r: 2.5, strokeWidth: 0 }}
+            stroke="var(--success)"
+            strokeWidth={2.5}
+            type="monotone"
+          />
         </LineChart>
       </ResponsiveContainer>
     </ChartFrame>

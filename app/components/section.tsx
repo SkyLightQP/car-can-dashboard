@@ -12,11 +12,11 @@ interface SectionProps {
 
 export function Section({ title, description, action, children, className }: SectionProps) {
   return (
-    <section className={cn('flex flex-col gap-4', className)}>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          {description ? <p className="text-sm text-[var(--foreground)]/60">{description}</p> : null}
+    <section className={cn('flex flex-col gap-3.5', className)}>
+      <div className="flex flex-wrap items-center justify-between gap-3 px-1">
+        <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+          <h2 className="text-[15px] font-semibold tracking-tight">{title}</h2>
+          {description ? <p className="text-xs text-[var(--muted)]">{description}</p> : null}
         </div>
         {action}
       </div>
