@@ -2,28 +2,51 @@ import { Card, Table } from '@heroui/react';
 
 import { ChartCard } from '@/components/chart-card';
 import { WeeklyTrendChart } from '@/components/charts/weekly-trend-chart';
+import { DataLoadError } from '@/components/data-load-error';
 import { CalendarIcon } from '@/components/icons';
 import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
-import { dailyTrips, weeklySummary, weeklyTrend } from '@/mocks/trips';
+import { collectorClient } from '@/libs/collector-client.server';
+import { kstDateRangeEndingToday } from '@/libs/datetime';
+import { summarizeRecentWeek, toDailyTripPoints, toWeeklyPoints } from '@/libs/trip-stats';
 
 import type { Route } from './+types/trips';
+
+const RECENT_DAYS = 14;
+const RECENT_WEEKS = 6;
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: '주행 기록 | 차량 대시보드' }];
 }
 
-const totalDistanceKm = dailyTrips.reduce((sum, trip) => sum + trip.distanceKm, 0);
-const drivenDays = dailyTrips.filter((trip) => trip.distanceKm > 0).length;
-const peakSpeedKph = dailyTrips.length ? Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph)) : 0;
-const weeklyTotalKm = weeklyTrend.reduce((sum, point) => sum + point.distanceKm, 0);
+export async function loader() {
+  const [dailyTrips, weeklyTrips] = await Promise.all([
+    collectorClient.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
+    collectorClient.trips.weekly.query({ weeks: RECENT_WEEKS }),
+  ]);
+  const dailyTripPoints = toDailyTripPoints(dailyTrips);
 
-// 최신 날짜가 위로 오도록 뒤집는다. mock 배열 자체는 건드리지 않는다.
-const rows = [...dailyTrips].reverse();
-const period = dailyTrips.length ? `${dailyTrips[0].label} – ${dailyTrips[dailyTrips.length - 1].label}` : '';
+  return {
+    dailyTrips: dailyTripPoints,
+    weeklySummary: summarizeRecentWeek(dailyTripPoints),
+    weeklyTrend: toWeeklyPoints(weeklyTrips),
+  };
+}
 
-export default function Trips() {
+export function ErrorBoundary() {
+  return <DataLoadError title="주행 기록" />;
+}
+
+export default function Trips({ loaderData }: Route.ComponentProps) {
+  const { dailyTrips, weeklySummary, weeklyTrend } = loaderData;
+  const totalDistanceKm = dailyTrips.reduce((sum, trip) => sum + trip.distanceKm, 0);
+  const drivenDays = dailyTrips.filter((trip) => trip.distanceKm > 0).length;
+  const peakSpeedKph = dailyTrips.length ? Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph)) : 0;
+  const weeklyTotalKm = weeklyTrend.reduce((sum, point) => sum + point.distanceKm, 0);
+  const newestFirstTrips = [...dailyTrips].reverse();
+  const period = dailyTrips.length ? `${dailyTrips[0].label} – ${dailyTrips[dailyTrips.length - 1].label}` : '';
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
@@ -37,8 +60,8 @@ export default function Trips() {
         <StatCard hint="14일 중" label="주행한 날" unit="일" value={String(drivenDays)} />
         <StatCard hint="14일 최고" label="최고 속도" unit="km/h" value={String(peakSpeedKph)} />
         <StatCard
-          changePct={weeklySummary.distanceChangePct}
-          hint="지난주 대비"
+          changePct={weeklySummary.distanceChangePct ?? undefined}
+          hint="직전 7일 대비"
           label="주간 평균 주행거리"
           unit="km"
           value={weeklySummary.avgDistanceKm.toFixed(1)}
@@ -67,7 +90,7 @@ export default function Trips() {
                   <Table.Column>주행 시간</Table.Column>
                 </Table.Header>
                 <Table.Body>
-                  {rows.map((trip) => (
+                  {newestFirstTrips.map((trip) => (
                     <Table.Row key={trip.date}>
                       <Table.Cell>{trip.date}</Table.Cell>
                       <Table.Cell className="tabular-nums">{trip.distanceKm.toFixed(1)}</Table.Cell>

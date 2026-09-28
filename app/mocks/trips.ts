@@ -1,4 +1,4 @@
-import type { DailyTrip, LastDrive, WeeklyPoint, WeeklySummary } from '@/types/dashboard';
+import type { DailyTrip, LastDrive, WeeklySummary } from '@/types/dashboard';
 
 export const dailyTrips: DailyTrip[] = [
   { date: '2026-08-12', label: '08-12', distanceKm: 42.3, avgSpeedKph: 38, maxSpeedKph: 92, drivingMinutes: 67 },
@@ -25,18 +25,9 @@ export const lastDrive: LastDrive = {
   durationMinutes: 60,
 };
 
-export const weeklySummary: WeeklySummary = {
+export const weeklySummary = {
   avgDistanceKm: 45.3,
   avgSpeedKph: 40.3,
   distanceChangePct: 16.9,
   speedChangePct: 17.2,
-};
-
-export const weeklyTrend: WeeklyPoint[] = [
-  { weekLabel: '7월 3주', distanceKm: 262.4, avgSpeedKph: 36.1 },
-  { weekLabel: '7월 4주', distanceKm: 298.7, avgSpeedKph: 38.5 },
-  { weekLabel: '7월 5주', distanceKm: 211.9, avgSpeedKph: 33.2 },
-  { weekLabel: '8월 1주', distanceKm: 334.6, avgSpeedKph: 41.0 },
-  { weekLabel: '8월 2주', distanceKm: 271.5, avgSpeedKph: 34.4 },
-  { weekLabel: '8월 3주', distanceKm: 317.4, avgSpeedKph: 40.3 },
-];
+} satisfies WeeklySummary;

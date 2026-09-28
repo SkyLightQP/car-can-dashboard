@@ -55,8 +55,8 @@ export interface LastDrive {
 export interface WeeklySummary {
   avgDistanceKm: number;
   avgSpeedKph: number;
-  distanceChangePct: number;
-  speedChangePct: number;
+  distanceChangePct: number | null;
+  speedChangePct: number | null;
 }
 
 export interface WeeklyPoint {

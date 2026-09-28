@@ -1,4 +1,12 @@
 const KST_OFFSET_MINUTES = 9 * 60;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export function kstDateRangeEndingToday(days: number): { from: string; to: string } {
+  const todayKst = new Date(Date.now() + KST_OFFSET_MINUTES * 60_000);
+  const firstDayKst = new Date(todayKst.getTime() - (days - 1) * DAY_MS);
+
+  return { from: firstDayKst.toISOString().slice(0, 10), to: todayKst.toISOString().slice(0, 10) };
+}
 
 /**
  * ISO 문자열을 한국 시간 기준의 고정 형식으로 만든다.
