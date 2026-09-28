@@ -6,14 +6,15 @@ import type { TirePosition, TireReading } from '@/types/dashboard';
 
 const positionOrder: TirePosition[] = ['frontLeft', 'frontRight', 'rearLeft', 'rearRight'];
 
-const tireToneByColor: Record<ReturnType<typeof statusChipColor>, string> = {
+const tireToneByColor: Record<ReturnType<typeof statusChipColor> | 'default', string> = {
   success: 'bg-[var(--success-soft)]',
   warning: 'bg-[var(--warning-soft)]',
   danger: 'bg-[var(--danger-soft)]',
+  default: 'bg-[var(--foreground)]/[0.04]',
 };
 
 function TireBadge({ reading }: { reading: TireReading }) {
-  const tone = statusChipColor(reading.status);
+  const tone = reading.status ? statusChipColor(reading.status) : 'default';
 
   return (
     <div
@@ -23,10 +24,12 @@ function TireBadge({ reading }: { reading: TireReading }) {
       )}
     >
       <span className="text-xs text-[var(--muted)]">{reading.label}</span>
-      <span className="text-2xl font-semibold tracking-tight tabular-nums">{reading.pressurePsi.toFixed(1)}</span>
+      <span className="text-2xl font-semibold tracking-tight tabular-nums">
+        {reading.pressurePsi === null ? '-' : reading.pressurePsi.toFixed(1)}
+      </span>
       <span className="text-xs text-[var(--muted)]">psi · 권장 {reading.recommendedPsi}</span>
       <Chip className="mt-1" color={tone} size="sm" variant="soft">
-        <Chip.Label>{statusLabel(reading.status)}</Chip.Label>
+        <Chip.Label>{reading.status ? statusLabel(reading.status) : '미수신'}</Chip.Label>
       </Chip>
     </div>
   );

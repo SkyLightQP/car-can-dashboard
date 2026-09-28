@@ -5,9 +5,9 @@ export type TirePosition = 'frontLeft' | 'frontRight' | 'rearLeft' | 'rearRight'
 export interface TireReading {
   position: TirePosition;
   label: string;
-  pressurePsi: number;
+  pressurePsi: number | null;
   recommendedPsi: number;
-  status: StatusLevel;
+  status: StatusLevel | null;
 }
 
 export interface BatteryReading {
