@@ -8,7 +8,7 @@ import prettier from 'eslint-config-prettier/flat';
 import globals from 'globals';
 
 export default defineConfig([
-  globalIgnores(['build/**', '.react-router/**', 'dist/**', 'node_modules/**']),
+  globalIgnores(['build/**', '.react-router/**', 'dist/**', 'node_modules/**', 'app/types/collector/**']),
   js.configs.recommended,
   ...tseslint.configs.recommended,
   react.configs.flat.recommended,
