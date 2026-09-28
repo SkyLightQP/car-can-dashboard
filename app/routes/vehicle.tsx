@@ -9,27 +9,29 @@ import { StatCard } from '@/components/stat-card';
 import { TirePressureDiagram } from '@/components/tire-pressure-diagram';
 import { collectorClient } from '@/libs/collector-client.server';
 import { formatKstDate } from '@/libs/datetime';
-import { toTireReadings } from '@/libs/vehicle-readings';
+import { toBatteryHistoryPoints, toBatteryReading, toTireReadings } from '@/libs/vehicle-readings';
 import { useVehicleProfile } from '@/libs/vehicle-profile';
-import { batteryHistory, batteryReading } from '@/mocks/vehicle';
 
 import type { Route } from './+types/vehicle';
+
+const BATTERY_HISTORY_DAYS = 7;
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: '차량 상태 | 차량 대시보드' }];
 }
 
-const averageVoltage = batteryHistory.length
-  ? (batteryHistory.reduce((sum, point) => sum + point.voltage, 0) / batteryHistory.length).toFixed(2)
-  : '—';
-
 export async function loader() {
-  const status = await collectorClient.vehicle.status.query();
+  const [status, batteryHistory] = await Promise.all([
+    collectorClient.vehicle.status.query(),
+    collectorClient.vehicle.batteryHistory.query({ days: BATTERY_HISTORY_DAYS }),
+  ]);
 
   return {
     measuredAt: status?.measuredAt ?? null,
     tpmsWarnLamp: status?.tpmsWarnLamp ?? false,
     tireReadings: toTireReadings(status),
+    batteryReading: toBatteryReading(status),
+    batteryHistory: toBatteryHistoryPoints(batteryHistory),
   };
 }
 
@@ -38,8 +40,12 @@ export function ErrorBoundary() {
 }
 
 export default function Vehicle({ loaderData }: Route.ComponentProps) {
-  const { measuredAt, tpmsWarnLamp, tireReadings } = loaderData;
+  const { measuredAt, tpmsWarnLamp, tireReadings, batteryReading, batteryHistory } = loaderData;
   const vehicleProfile = useVehicleProfile();
+  const receivedVoltages = batteryHistory.flatMap((point) => (point.voltage === null ? [] : [point.voltage]));
+  const averageVoltage = receivedVoltages.length
+    ? (receivedVoltages.reduce((sum, voltage) => sum + voltage, 0) / receivedVoltages.length).toFixed(2)
+    : '-';
 
   return (
     <div className="flex flex-col gap-6">
@@ -78,7 +84,7 @@ export default function Vehicle({ loaderData }: Route.ComponentProps) {
         </div>
       </Section>
 
-      <Section description="시동 전 기준 전압과 최근 7일 추이" title="배터리">
+      <Section description="최근 측정 전압과 최근 7일 시동 중 평균 전압" title="배터리">
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <BatteryGauge reading={batteryReading} />
           <ChartCard hint="최근 7일 평균" label="전압 추이" unit="V" value={averageVoltage}>

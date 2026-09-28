@@ -18,7 +18,7 @@ export function BatteryTrendChart({ data }: { data: BatteryHistoryPoint[] }) {
         <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <CartesianGrid {...gridProps} />
           <XAxis {...axisProps} dataKey="label" />
-          <YAxis {...axisProps} domain={[11.5, 13]} unit="V" width={56} />
+          <YAxis {...axisProps} domain={[11.5, 15]} unit="V" width={56} />
           <Tooltip
             contentStyle={tooltipContentStyle}
             cursor={{ stroke: 'var(--chart-grid)', strokeDasharray: '4 4' }}

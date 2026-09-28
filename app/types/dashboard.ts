@@ -14,11 +14,12 @@ export interface BatteryReading {
   voltage: number;
   status: StatusLevel;
   measuredAt: string;
+  engineOn: boolean;
 }
 
 export interface BatteryHistoryPoint {
   label: string;
-  voltage: number;
+  voltage: number | null;
 }
 
 export interface VehicleInfo {
