@@ -1,5 +1,7 @@
 import type { MaintenanceRecord } from '@/types/dashboard';
 
+export const mockCurrentOdometerKm = 48213;
+
 export const initialMaintenanceRecords: MaintenanceRecord[] = [
   {
     id: 'mr-1',

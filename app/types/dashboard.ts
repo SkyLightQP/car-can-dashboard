@@ -22,13 +22,6 @@ export interface BatteryHistoryPoint {
   voltage: number | null;
 }
 
-export interface VehicleInfo {
-  name: string;
-  model: string;
-  plateNumber: string;
-  totalDistanceKm: number;
-}
-
 export interface VehicleProfile {
   name: string;
   model: string;
@@ -46,6 +39,7 @@ export interface DailyTrip {
 
 export interface LastDrive {
   startedAt: string;
+  endedAt: string;
   distanceKm: number;
   maxSpeedKph: number;
   avgSpeedKph: number;
