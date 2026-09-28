@@ -28,6 +28,12 @@ export interface VehicleInfo {
   totalDistanceKm: number;
 }
 
+export interface VehicleProfile {
+  name: string;
+  model: string;
+  plateNumber: string;
+}
+
 export interface DailyTrip {
   date: string;
   label: string;

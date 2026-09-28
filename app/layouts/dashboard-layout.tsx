@@ -5,7 +5,13 @@ import { CarIcon, MenuIcon } from '@/components/icons';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { MaintenanceProvider } from '@/contexts/maintenance-context';
-import { vehicleInfo } from '@/mocks/vehicle';
+import { readVehicleProfile } from '@/libs/vehicle-profile.server';
+
+import type { Route } from './+types/dashboard-layout';
+
+export function loader() {
+  return { vehicleProfile: readVehicleProfile() };
+}
 
 function BrandMark() {
   return (
@@ -18,7 +24,8 @@ function BrandMark() {
   );
 }
 
-export default function DashboardLayout() {
+export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
+  const { vehicleProfile } = loaderData;
   const drawer = useOverlayState();
 
   return (
@@ -48,7 +55,7 @@ export default function DashboardLayout() {
                     <Drawer.Dialog>
                       <Drawer.CloseTrigger />
                       <Drawer.Header>
-                        <Drawer.Heading>{vehicleInfo.plateNumber}</Drawer.Heading>
+                        <Drawer.Heading>{vehicleProfile.plateNumber}</Drawer.Heading>
                       </Drawer.Header>
                       <Drawer.Body>
                         <SidebarNav onNavigate={drawer.close} variant="list" />
@@ -57,7 +64,7 @@ export default function DashboardLayout() {
                   </Drawer.Content>
                 </Drawer.Backdrop>
               </Drawer>
-              <span className="truncate text-sm font-semibold">{vehicleInfo.plateNumber}</span>
+              <span className="truncate text-sm font-semibold">{vehicleProfile.plateNumber}</span>
               <ThemeToggle />
             </header>
 
