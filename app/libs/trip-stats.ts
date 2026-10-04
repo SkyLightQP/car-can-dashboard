@@ -19,8 +19,9 @@ export function toWeeklyPoints(weeks: WeeklyTrips): WeeklyPoint[] {
 function totalDrivingOf(trips: DailyTrip[]): { distanceKm: number; avgSpeedKph: number } {
   const distanceKm = trips.reduce((sum, trip) => sum + trip.distanceKm, 0);
   const drivingMinutes = trips.reduce((sum, trip) => sum + trip.drivingMinutes, 0);
+  const speedMinutes = trips.reduce((sum, trip) => sum + trip.avgSpeedKph * trip.drivingMinutes, 0);
 
-  return { distanceKm, avgSpeedKph: drivingMinutes > 0 ? distanceKm / (drivingMinutes / 60) : 0 };
+  return { distanceKm, avgSpeedKph: drivingMinutes > 0 ? speedMinutes / drivingMinutes : 0 };
 }
 
 function changePctFrom(previous: number, current: number): number | null {
