@@ -1,12 +1,12 @@
 import { Card, Table } from '@heroui/react';
 
-import { ChartCard } from '@/components/chart-card';
-import { WeeklyTrendChart } from '@/components/charts/weekly-trend-chart';
-import { DataLoadError } from '@/components/data-load-error';
-import { CalendarIcon } from '@/components/icons';
-import { HeaderPill, PageHeader } from '@/components/page-header';
-import { Section } from '@/components/section';
-import { StatCard } from '@/components/stat-card';
+import { ChartCard } from '@/components/ChartCard';
+import { WeeklyTrendChart } from '@/components/charts/WeeklyTrendChart';
+import { DataLoadError } from '@/components/DataLoadError';
+import { CalendarIcon } from '@/components/Icons';
+import { HeaderPill, PageHeader } from '@/components/PageHeader';
+import { Section } from '@/components/Section';
+import { StatCard } from '@/components/StatCard';
 import { collectorContext } from '@/libs/collector-client.server';
 import { kstDateRangeEndingToday } from '@/libs/datetime';
 import { summarizeRecentWeek, toDailyTripPoints, toWeeklyPoints } from '@/libs/trip-stats';

@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useFetcher } from 'react-router';
 
-import { PlusIcon } from '@/components/icons';
+import { PlusIcon } from '@/components/Icons';
 import { kstDateRangeEndingToday } from '@/libs/datetime';
 import {
   type MaintenanceActionResult,

@@ -1,6 +1,6 @@
 import { Button, useIsHydrated, useTheme } from '@heroui/react';
 
-import { MoonIcon, SunIcon } from '@/components/icons';
+import { MoonIcon, SunIcon } from '@/components/Icons';
 import { cn } from '@/libs/utils';
 
 export function ThemeToggle({ className }: { className?: string }) {

@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from 'react';
 import { NavLink } from 'react-router';
 
-import { CarIcon, GaugeIcon, RouteIcon, WrenchIcon } from '@/components/icons';
+import { CarIcon, GaugeIcon, RouteIcon, WrenchIcon } from '@/components/Icons';
 import { cn } from '@/libs/utils';
 
 interface NavItem {

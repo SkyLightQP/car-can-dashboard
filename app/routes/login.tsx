@@ -2,7 +2,7 @@ import { Button, Card, FieldError, Form, Input, Label, TextField } from '@heroui
 import type { SyntheticEvent } from 'react';
 import { redirect, useFetcher } from 'react-router';
 
-import { ThemeToggle } from '@/components/theme-toggle';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { hasSession, readToken, saveTokenCookie, signIn, type SignInResult } from '@/libs/auth.server';
 
 import type { Route } from './+types/login';

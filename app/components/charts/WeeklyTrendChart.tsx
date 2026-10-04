@@ -1,7 +1,7 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { TooltipValueType } from 'recharts';
 
-import { ChartFrame } from '@/components/chart-frame';
+import { ChartFrame } from '@/components/ChartFrame';
 import {
   axisProps,
   gridProps,

@@ -1,6 +1,6 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import { ChartFrame } from '@/components/chart-frame';
+import { ChartFrame } from '@/components/ChartFrame';
 import {
   axisProps,
   gridProps,

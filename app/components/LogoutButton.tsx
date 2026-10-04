@@ -1,7 +1,7 @@
 import { Button } from '@heroui/react';
 import { Form } from 'react-router';
 
-import { LogoutIcon } from '@/components/icons';
+import { LogoutIcon } from '@/components/Icons';
 
 export function LogoutButton({ variant }: { variant: 'rail' | 'list' }) {
   if (variant === 'rail') {

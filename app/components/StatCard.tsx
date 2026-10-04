@@ -1,7 +1,7 @@
 import { Card } from '@heroui/react';
 import type { ReactNode } from 'react';
 
-import { TrendNote } from '@/components/trend-note';
+import { TrendNote } from '@/components/TrendNote';
 import { cn } from '@/libs/utils';
 
 interface StatCardProps {

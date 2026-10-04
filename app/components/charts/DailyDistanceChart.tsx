@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { BarShapeProps, TooltipValueType } from 'recharts';
 
-import { ChartFrame } from '@/components/chart-frame';
+import { ChartFrame } from '@/components/ChartFrame';
 import {
   axisProps,
   barCursor,

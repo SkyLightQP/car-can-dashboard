@@ -1,4 +1,4 @@
-import { TrendDownIcon, TrendUpIcon } from '@/components/icons';
+import { TrendDownIcon, TrendUpIcon } from '@/components/Icons';
 import { cn } from '@/libs/utils';
 
 interface TrendNoteProps {

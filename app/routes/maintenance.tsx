@@ -1,12 +1,12 @@
 import { Card } from '@heroui/react';
 
-import { DataLoadError } from '@/components/data-load-error';
-import { MaintenanceAlertList } from '@/components/maintenance-alert-list';
-import { MaintenanceRecordDeleteDialog } from '@/components/maintenance-record-delete-dialog';
-import { MaintenanceRecordModal } from '@/components/maintenance-record-modal';
-import { MaintenanceScheduleSettings } from '@/components/maintenance-schedule-settings';
-import { PageHeader } from '@/components/page-header';
-import { Section } from '@/components/section';
+import { DataLoadError } from '@/components/DataLoadError';
+import { MaintenanceAlertList } from '@/components/MaintenanceAlertList';
+import { MaintenanceRecordDeleteDialog } from '@/components/MaintenanceRecordDeleteDialog';
+import { MaintenanceRecordModal } from '@/components/MaintenanceRecordModal';
+import { MaintenanceScheduleSettings } from '@/components/MaintenanceScheduleSettings';
+import { PageHeader } from '@/components/PageHeader';
+import { Section } from '@/components/Section';
 import { collectorContext } from '@/libs/collector-client.server';
 import {
   formatKm,

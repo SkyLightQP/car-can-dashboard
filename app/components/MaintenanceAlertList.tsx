@@ -1,6 +1,6 @@
 import { Card, Chip } from '@heroui/react';
 
-import { AlertIcon } from '@/components/icons';
+import { AlertIcon } from '@/components/Icons';
 import { compareByStatus, statusChipColor, statusLabel } from '@/libs/status';
 import { cn } from '@/libs/utils';
 import type { MaintenanceAlert, StatusLevel } from '@/types/dashboard';

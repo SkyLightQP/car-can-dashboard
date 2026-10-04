@@ -1,10 +1,10 @@
 import { Button, Drawer, useOverlayState } from '@heroui/react';
 import { Outlet } from 'react-router';
 
-import { CarIcon, MenuIcon } from '@/components/icons';
-import { LogoutButton } from '@/components/logout-button';
-import { SidebarNav } from '@/components/sidebar-nav';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { CarIcon, MenuIcon } from '@/components/Icons';
+import { LogoutButton } from '@/components/LogoutButton';
+import { SidebarNav } from '@/components/SidebarNav';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { requireCollectorSession } from '@/libs/auth.server';
 import { readVehicleProfile } from '@/libs/vehicle-profile.server';
 
