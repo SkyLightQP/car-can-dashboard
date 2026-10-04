@@ -11,6 +11,7 @@ import { collectorContext } from '@/libs/collector-client.server';
 import { formatKstDate } from '@/libs/datetime';
 import { toBatteryHistoryPoints, toBatteryReading, toTireReadings } from '@/libs/vehicle-readings';
 import { useVehicleProfile } from '@/libs/vehicle-profile';
+import { readRecommendedTirePsi } from '@/libs/vehicle-profile.server';
 
 import type { Route } from './+types/vehicle';
 
@@ -30,7 +31,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   return {
     measuredAt: status?.measuredAt ?? null,
     tpmsWarnLamp: status?.tpmsWarnLamp ?? false,
-    tireReadings: toTireReadings(status),
+    tireReadings: toTireReadings(status, readRecommendedTirePsi()),
     batteryReading: toBatteryReading(status),
     batteryHistory: toBatteryHistoryPoints(batteryHistory),
   };
