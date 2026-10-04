@@ -44,6 +44,8 @@
 
   --surface-shadow: 0 1px 0 0 color-mix(in oklab, var(--white) 5%, transparent) inset;
 
+  --field-background: oklch(0.27 0.006 286.03);
+
   --rail-surface: oklch(0.2355 0.0055 285.89);
   --chart-bar: oklch(0.325 0.006 286.03);
   --chart-grid: color-mix(in oklab, var(--foreground) 10%, transparent);
