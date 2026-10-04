@@ -7,7 +7,7 @@ import { CalendarIcon } from '@/components/icons';
 import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
-import { collectorClient } from '@/libs/collector-client.server';
+import { collectorContext } from '@/libs/collector-client.server';
 import { kstDateRangeEndingToday } from '@/libs/datetime';
 import { summarizeRecentWeek, toDailyTripPoints, toWeeklyPoints } from '@/libs/trip-stats';
 
@@ -20,10 +20,11 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '주행 기록 | 차량 대시보드' }];
 }
 
-export async function loader() {
+export async function loader({ context }: Route.LoaderArgs) {
+  const collector = context.get(collectorContext);
   const [dailyTrips, weeklyTrips] = await Promise.all([
-    collectorClient.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
-    collectorClient.trips.weekly.query({ weeks: RECENT_WEEKS }),
+    collector.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
+    collector.trips.weekly.query({ weeks: RECENT_WEEKS }),
   ]);
   const dailyTripPoints = toDailyTripPoints(dailyTrips);
 

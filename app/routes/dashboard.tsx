@@ -12,7 +12,7 @@ import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
 import { TrendNote } from '@/components/trend-note';
-import { collectorClient } from '@/libs/collector-client.server';
+import { collectorContext } from '@/libs/collector-client.server';
 import { formatKstDate, formatKstDateTime, kstDateRangeEndingToday } from '@/libs/datetime';
 import { toMaintenanceAlerts } from '@/libs/maintenance';
 import { summarizeRecentWeek, toDailyTripPoints } from '@/libs/trip-stats';
@@ -29,12 +29,13 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '대시보드 | 차량 대시보드' }];
 }
 
-export async function loader() {
+export async function loader({ context }: Route.LoaderArgs) {
+  const collector = context.get(collectorContext);
   const [status, dailyTrips, lastDrive, maintenanceAlerts] = await Promise.all([
-    collectorClient.vehicle.status.query(),
-    collectorClient.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
-    collectorClient.trips.last.query(),
-    collectorClient.maintenance.alerts.query(),
+    collector.vehicle.status.query(),
+    collector.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
+    collector.trips.last.query(),
+    collector.maintenance.alerts.query(),
   ]);
   const dailyTripPoints = toDailyTripPoints(dailyTrips);
 

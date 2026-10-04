@@ -7,7 +7,7 @@ import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
 import { TirePressureDiagram } from '@/components/tire-pressure-diagram';
-import { collectorClient } from '@/libs/collector-client.server';
+import { collectorContext } from '@/libs/collector-client.server';
 import { formatKstDate } from '@/libs/datetime';
 import { toBatteryHistoryPoints, toBatteryReading, toTireReadings } from '@/libs/vehicle-readings';
 import { useVehicleProfile } from '@/libs/vehicle-profile';
@@ -20,10 +20,11 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '차량 상태 | 차량 대시보드' }];
 }
 
-export async function loader() {
+export async function loader({ context }: Route.LoaderArgs) {
+  const collector = context.get(collectorContext);
   const [status, batteryHistory] = await Promise.all([
-    collectorClient.vehicle.status.query(),
-    collectorClient.vehicle.batteryHistory.query({ days: BATTERY_HISTORY_DAYS }),
+    collector.vehicle.status.query(),
+    collector.vehicle.batteryHistory.query({ days: BATTERY_HISTORY_DAYS }),
   ]);
 
   return {

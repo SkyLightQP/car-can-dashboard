@@ -2,11 +2,15 @@ import { Button, Drawer, useOverlayState } from '@heroui/react';
 import { Outlet } from 'react-router';
 
 import { CarIcon, MenuIcon } from '@/components/icons';
+import { LogoutButton } from '@/components/logout-button';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { requireCollectorSession } from '@/libs/auth.server';
 import { readVehicleProfile } from '@/libs/vehicle-profile.server';
 
 import type { Route } from './+types/dashboard-layout';
+
+export const middleware: Route.MiddlewareFunction[] = [requireCollectorSession];
 
 export function loader() {
   return { vehicleProfile: readVehicleProfile() };
@@ -38,7 +42,10 @@ export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
             <BrandMark />
             <SidebarNav variant="rail" />
           </div>
-          <ThemeToggle />
+          <div className="flex flex-col items-center gap-2.5">
+            <LogoutButton variant="rail" />
+            <ThemeToggle />
+          </div>
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col gap-5 sm:gap-6">
@@ -57,6 +64,9 @@ export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
                     </Drawer.Header>
                     <Drawer.Body>
                       <SidebarNav onNavigate={drawer.close} variant="list" />
+                      <div className="mt-4 border-t border-[var(--separator)] pt-4">
+                        <LogoutButton variant="list" />
+                      </div>
                     </Drawer.Body>
                   </Drawer.Dialog>
                 </Drawer.Content>

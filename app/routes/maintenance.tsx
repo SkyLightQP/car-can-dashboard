@@ -7,7 +7,7 @@ import { MaintenanceRecordModal } from '@/components/maintenance-record-modal';
 import { MaintenanceScheduleSettings } from '@/components/maintenance-schedule-settings';
 import { PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
-import { collectorClient } from '@/libs/collector-client.server';
+import { collectorContext } from '@/libs/collector-client.server';
 import {
   formatKm,
   type MaintenanceIntent,
@@ -23,11 +23,12 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '정비 | 차량 대시보드' }];
 }
 
-export async function loader() {
+export async function loader({ context }: Route.LoaderArgs) {
+  const collector = context.get(collectorContext);
   const [alerts, records, schedules] = await Promise.all([
-    collectorClient.maintenance.alerts.query(),
-    collectorClient.maintenance.records.list.query(),
-    collectorClient.maintenance.schedules.list.query(),
+    collector.maintenance.alerts.query(),
+    collector.maintenance.records.list.query(),
+    collector.maintenance.schedules.list.query(),
   ]);
 
   return {
@@ -38,9 +39,9 @@ export async function loader() {
   };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const payload = (await request.json()) as MaintenanceIntent;
-  return runMaintenanceIntent(payload);
+  return runMaintenanceIntent(context.get(collectorContext), payload);
 }
 
 export function ErrorBoundary() {

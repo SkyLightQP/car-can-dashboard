@@ -145,6 +145,16 @@ export function SparkIcon(props: IconProps) {
   );
 }
 
+export function LogoutIcon(props: IconProps) {
+  return (
+    <svg {...iconBase} {...props}>
+      <path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" />
+      <path d="M9 16l-4-4 4-4" />
+      <path d="M5 12h11" />
+    </svg>
+  );
+}
+
 export function ArrowRightIcon(props: IconProps) {
   return (
     <svg {...iconBase} {...props}>
