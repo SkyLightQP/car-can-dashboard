@@ -12,9 +12,9 @@ import { HeaderPill, PageHeader } from '@/components/page-header';
 import { Section } from '@/components/section';
 import { StatCard } from '@/components/stat-card';
 import { TrendNote } from '@/components/trend-note';
-import { useMaintenance } from '@/contexts/maintenance-context';
 import { collectorClient } from '@/libs/collector-client.server';
 import { formatKstDate, formatKstDateTime, kstDateRangeEndingToday } from '@/libs/datetime';
+import { toMaintenanceAlerts } from '@/libs/maintenance';
 import { summarizeRecentWeek, toDailyTripPoints } from '@/libs/trip-stats';
 import { cn } from '@/libs/utils';
 import { toBatteryReading } from '@/libs/vehicle-readings';
@@ -30,10 +30,11 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export async function loader() {
-  const [status, dailyTrips, lastDrive] = await Promise.all([
+  const [status, dailyTrips, lastDrive, maintenanceAlerts] = await Promise.all([
     collectorClient.vehicle.status.query(),
     collectorClient.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
     collectorClient.trips.last.query(),
+    collectorClient.maintenance.alerts.query(),
   ]);
   const dailyTripPoints = toDailyTripPoints(dailyTrips);
 
@@ -44,6 +45,7 @@ export async function loader() {
     dailyTrips: dailyTripPoints,
     weeklySummary: summarizeRecentWeek(dailyTripPoints),
     lastDrive,
+    maintenanceAlerts: toMaintenanceAlerts(maintenanceAlerts),
   };
 }
 
@@ -131,9 +133,8 @@ function OdometerCard({
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
-  const { measuredAt, odometerKm, battery, dailyTrips, weeklySummary, lastDrive } = loaderData;
+  const { measuredAt, odometerKm, battery, dailyTrips, weeklySummary, lastDrive, maintenanceAlerts } = loaderData;
   const vehicleProfile = useVehicleProfile();
-  const { alerts } = useMaintenance();
   const recentDistanceKm = dailyTrips.reduce((sum, trip) => sum + trip.distanceKm, 0);
   const peakSpeedKph = dailyTrips.length ? Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph)) : 0;
 
@@ -218,7 +219,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           description="예정된 정비 항목"
           title="정비 알림"
         >
-          <MaintenanceAlertList alerts={alerts} limit={3} />
+          <MaintenanceAlertList alerts={maintenanceAlerts} limit={3} />
         </Section>
       </div>
     </div>

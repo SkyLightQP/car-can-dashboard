@@ -19,6 +19,10 @@ const iconToneByStatus: Record<StatusLevel, string> = {
 export function MaintenanceAlertList({ alerts, limit }: MaintenanceAlertListProps) {
   const visible = typeof limit === 'number' ? [...alerts].sort(compareByStatus).slice(0, limit) : alerts;
 
+  if (visible.length === 0) {
+    return <Card className="p-6 text-sm text-[var(--muted)]">활성화된 정비 알림이 없습니다.</Card>;
+  }
+
   return (
     <ul className="flex flex-col gap-2.5">
       {visible.map((alert) => (
@@ -27,7 +31,7 @@ export function MaintenanceAlertList({ alerts, limit }: MaintenanceAlertListProp
             <span
               className={cn(
                 'flex size-9 shrink-0 items-center justify-center rounded-full',
-                iconToneByStatus[alert.status]
+                iconToneByStatus[alert.status ?? 'normal']
               )}
             >
               <AlertIcon className="size-4.5" />
@@ -36,8 +40,8 @@ export function MaintenanceAlertList({ alerts, limit }: MaintenanceAlertListProp
               <span className="truncate text-sm font-medium">{alert.item}</span>
               <span className="truncate text-xs text-[var(--muted)]">{alert.dueDescription}</span>
             </div>
-            <Chip color={statusChipColor(alert.status)} size="sm" variant="soft">
-              <Chip.Label>{statusLabel(alert.status)}</Chip.Label>
+            <Chip color={alert.status ? statusChipColor(alert.status) : 'default'} size="sm" variant="soft">
+              <Chip.Label>{alert.status ? statusLabel(alert.status) : '미수신'}</Chip.Label>
             </Chip>
           </Card>
         </li>

@@ -63,14 +63,5 @@ export interface MaintenanceAlert {
   id: string;
   item: string;
   dueDescription: string;
-  status: StatusLevel;
-}
-
-export interface MaintenanceRecord {
-  id: string;
-  item: string;
-  performedOn: string;
-  odometerKm: number;
-  costKrw: number;
-  note: string;
+  status: StatusLevel | null;
 }
