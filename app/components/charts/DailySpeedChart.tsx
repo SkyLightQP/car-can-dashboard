@@ -14,7 +14,7 @@ const legendStyle = { fontSize: 11, paddingTop: 8 };
 
 export function DailySpeedChart({ data }: { data: DailyTrip[] }) {
   return (
-    <ChartFrame height={260} label="최근 14일 일일 속도 차트">
+    <ChartFrame height={260} label="최근 7일 일일 속도 차트">
       <ResponsiveContainer height="100%" width="100%">
         <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <CartesianGrid {...gridProps} />

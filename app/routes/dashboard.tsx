@@ -23,7 +23,8 @@ import type { BatteryReading } from '@/types/dashboard';
 
 import type { Route } from './+types/dashboard';
 
-const RECENT_DAYS = 14;
+const COMPARISON_DAYS = 14;
+const RECENT_DAYS = 7;
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: '대시보드 | 차량 대시보드' }];
@@ -33,7 +34,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   const collector = context.get(collectorContext);
   const [status, dailyTrips, lastDrive, maintenanceAlerts] = await Promise.all([
     collector.vehicle.status.query(),
-    collector.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
+    collector.trips.daily.query(kstDateRangeEndingToday(COMPARISON_DAYS)),
     collector.trips.last.query(),
     collector.maintenance.alerts.query(),
   ]);
@@ -43,7 +44,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     measuredAt: status?.measuredAt ?? null,
     odometerKm: status?.odometerKm ?? null,
     battery: toBatteryReading(status),
-    dailyTrips: dailyTripPoints,
+    dailyTrips: dailyTripPoints.slice(-RECENT_DAYS),
     weeklySummary: summarizeRecentWeek(dailyTripPoints),
     lastDrive,
     maintenanceAlerts: toMaintenanceAlerts(maintenanceAlerts),
@@ -176,12 +177,12 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <ChartCard hint="최근 14일 합계" label="일일 주행거리" unit="km" value={recentDistanceKm.toFixed(1)}>
+        <ChartCard hint="최근 7일 합계" label="일일 주행거리" unit="km" value={recentDistanceKm.toFixed(1)}>
           <DailyDistanceChart data={dailyTrips} />
         </ChartCard>
         <ChartCard
           changePct={weeklySummary.speedChangePct ?? undefined}
-          hint={`최근 14일 최고 ${peakSpeedKph} km/h`}
+          hint={`최근 7일 최고 ${peakSpeedKph} km/h`}
           label="일일 속도"
           unit="km/h"
           value={weeklySummary.avgSpeedKph.toFixed(1)}

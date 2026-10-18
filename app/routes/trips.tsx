@@ -13,7 +13,8 @@ import { summarizeRecentWeek, toDailyTripPoints, toWeeklyPoints } from '@/libs/t
 
 import type { Route } from './+types/trips';
 
-const RECENT_DAYS = 14;
+const COMPARISON_DAYS = 14;
+const RECENT_DAYS = 7;
 const RECENT_WEEKS = 6;
 
 export function meta(_: Route.MetaArgs) {
@@ -23,13 +24,13 @@ export function meta(_: Route.MetaArgs) {
 export async function loader({ context }: Route.LoaderArgs) {
   const collector = context.get(collectorContext);
   const [dailyTrips, weeklyTrips] = await Promise.all([
-    collector.trips.daily.query(kstDateRangeEndingToday(RECENT_DAYS)),
+    collector.trips.daily.query(kstDateRangeEndingToday(COMPARISON_DAYS)),
     collector.trips.weekly.query({ weeks: RECENT_WEEKS }),
   ]);
   const dailyTripPoints = toDailyTripPoints(dailyTrips);
 
   return {
-    dailyTrips: dailyTripPoints,
+    dailyTrips: dailyTripPoints.slice(-RECENT_DAYS),
     weeklySummary: summarizeRecentWeek(dailyTripPoints),
     weeklyTrend: toWeeklyPoints(weeklyTrips),
   };
@@ -52,14 +53,14 @@ export default function Trips({ loaderData }: Route.ComponentProps) {
     <div className="flex flex-col gap-6">
       <PageHeader
         actions={<HeaderPill icon={<CalendarIcon className="size-4" />}>{period}</HeaderPill>}
-        eyebrow="최근 14일 일별 기록"
+        eyebrow="최근 7일 일별 기록"
         title="주행 기록"
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard hint="14일 합계" label="14일 주행거리" unit="km" value={totalDistanceKm.toFixed(1)} />
-        <StatCard hint="14일 중" label="주행한 날" unit="일" value={String(drivenDays)} />
-        <StatCard hint="14일 최고" label="최고 속도" unit="km/h" value={String(peakSpeedKph)} />
+        <StatCard hint="7일 합계" label="7일 주행거리" unit="km" value={totalDistanceKm.toFixed(1)} />
+        <StatCard hint="7일 중" label="주행한 날" unit="일" value={String(drivenDays)} />
+        <StatCard hint="7일 최고" label="최고 속도" unit="km/h" value={String(peakSpeedKph)} />
         <StatCard
           changePct={weeklySummary.distanceChangePct ?? undefined}
           hint="직전 7일 대비"
