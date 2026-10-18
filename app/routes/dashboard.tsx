@@ -204,7 +204,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
               <StatCard label="주행 시간" unit="분" value={String(todayDrive.drivingMinutes)} />
             </div>
           ) : (
-            <Card className="p-6 text-sm text-[var(--muted)]">오늘은 아직 주행하지 않았습니다.</Card>
+            <Card className="p-6 text-sm text-[var(--muted)]">주행 기록이 없습니다.</Card>
           )}
         </Section>
 
