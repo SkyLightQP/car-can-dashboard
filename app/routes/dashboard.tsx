@@ -39,6 +39,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     collector.maintenance.alerts.query(),
   ]);
   const dailyTripPoints = toDailyTripPoints(dailyTrips);
+  const todayTrip = dailyTripPoints.at(-1);
 
   return {
     measuredAt: status?.measuredAt ?? null,
@@ -46,6 +47,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     battery: toBatteryReading(status),
     dailyTrips: dailyTripPoints.slice(-RECENT_DAYS),
     weeklySummary: summarizeRecentWeek(dailyTripPoints),
+    todayDrive: todayTrip && todayTrip.drivingMinutes > 0 ? todayTrip : null,
     lastDrive,
     maintenanceAlerts: toMaintenanceAlerts(maintenanceAlerts),
   };
@@ -135,7 +137,8 @@ function OdometerCard({
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
-  const { measuredAt, odometerKm, battery, dailyTrips, weeklySummary, lastDrive, maintenanceAlerts } = loaderData;
+  const { measuredAt, odometerKm, battery, dailyTrips, weeklySummary, todayDrive, lastDrive, maintenanceAlerts } =
+    loaderData;
   const vehicleProfile = useVehicleProfile();
   const recentDistanceKm = dailyTrips.reduce((sum, trip) => sum + trip.distanceKm, 0);
   const peakSpeedKph = dailyTrips.length ? Math.max(...dailyTrips.map((trip) => trip.maxSpeedKph)) : 0;
@@ -192,6 +195,19 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <Section description={todayDrive ? '0시부터 지금까지' : '주행 기록 없음'} title="오늘 주행">
+          {todayDrive ? (
+            <div className="grid grid-cols-2 gap-4">
+              <StatCard label="주행거리" unit="km" value={todayDrive.distanceKm.toFixed(1)} />
+              <StatCard label="최고 속도" unit="km/h" value={String(todayDrive.maxSpeedKph)} />
+              <StatCard label="평균 속도" unit="km/h" value={String(todayDrive.avgSpeedKph)} />
+              <StatCard label="주행 시간" unit="분" value={String(todayDrive.drivingMinutes)} />
+            </div>
+          ) : (
+            <Card className="p-6 text-sm text-[var(--muted)]">오늘은 아직 주행하지 않았습니다.</Card>
+          )}
+        </Section>
+
         <Section
           description={lastDrive ? formatKstDateTime(lastDrive.startedAt) : '주행 기록 없음'}
           title="마지막 운전"
@@ -207,23 +223,23 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             <Card className="p-6 text-sm text-[var(--muted)]">아직 기록된 주행이 없습니다.</Card>
           )}
         </Section>
-
-        <Section
-          action={
-            <Link
-              className="flex items-center gap-1 rounded-full bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] shadow-[var(--surface-shadow)] transition-colors hover:text-[var(--foreground)]"
-              to="/maintenance"
-            >
-              전체 보기
-              <ArrowRightIcon className="size-3.5" />
-            </Link>
-          }
-          description="예정된 정비 항목"
-          title="정비 알림"
-        >
-          <MaintenanceAlertList alerts={maintenanceAlerts} limit={3} />
-        </Section>
       </div>
+
+      <Section
+        action={
+          <Link
+            className="flex items-center gap-1 rounded-full bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] shadow-[var(--surface-shadow)] transition-colors hover:text-[var(--foreground)]"
+            to="/maintenance"
+          >
+            전체 보기
+            <ArrowRightIcon className="size-3.5" />
+          </Link>
+        }
+        description="예정된 정비 항목"
+        title="정비 알림"
+      >
+        <MaintenanceAlertList alerts={maintenanceAlerts} limit={3} />
+      </Section>
     </div>
   );
 }
