@@ -37,3 +37,12 @@ export function formatKstDate(iso: string): string {
   const formatted = formatKstDateTime(iso);
   return formatted ? formatted.replace(/ \d{2}:\d{2}$/, '') : '';
 }
+
+export function formatKstTime(epochMs: number): string {
+  const shifted = new Date(epochMs + KST_OFFSET_MINUTES * 60_000);
+  const hour = String(shifted.getUTCHours()).padStart(2, '0');
+  const minute = String(shifted.getUTCMinutes()).padStart(2, '0');
+  const second = String(shifted.getUTCSeconds()).padStart(2, '0');
+
+  return `${hour}:${minute}:${second}`;
+}

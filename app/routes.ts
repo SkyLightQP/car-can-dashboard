@@ -7,6 +7,7 @@ export default [
     index('routes/dashboard.tsx'),
     route('vehicle', 'routes/vehicle.tsx'),
     route('trips', 'routes/trips.tsx'),
+    route('trips/replay', 'routes/trips.replay.ts'),
     route('maintenance', 'routes/maintenance.tsx'),
   ]),
 ] satisfies RouteConfig;
