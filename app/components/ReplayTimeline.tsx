@@ -58,7 +58,7 @@ export function ReplayTimeline({ sessions, positionMs, onSeek }: ReplayTimelineP
         return (
           <Fragment key={session.startedAt}>
             {index > 0 ? (
-              <span className="shrink-0 px-1 text-[11px] whitespace-nowrap text-[var(--muted)]">
+              <span className="min-w-0 truncate px-1 text-[11px] whitespace-nowrap text-[var(--muted)]">
                 ⋯ {formatGapLabel(Date.parse(session.startedAt) - Date.parse(sessions[index - 1].endedAt))} ⋯
               </span>
             ) : null}

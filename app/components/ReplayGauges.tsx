@@ -12,8 +12,8 @@ export function ReplayGauges({ point }: { point: DriveReplayPoint }) {
 
   return (
     <div className="grid grid-cols-2 items-end justify-items-center gap-6 sm:grid-cols-4">
-      <div className="flex flex-col items-center gap-2">
-        <svg aria-label={`속도 ${speed} km/h`} className="h-28 w-40" role="img" viewBox="0 0 100 62">
+      <div className="flex w-full flex-col items-center gap-2">
+        <svg aria-label={`속도 ${speed} km/h`} className="h-auto w-full max-w-40" role="img" viewBox="0 0 100 62">
           <path
             d="M10 56 A40 40 0 0 1 90 56"
             fill="none"
