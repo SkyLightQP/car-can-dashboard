@@ -3,6 +3,7 @@ import { Card, Table } from '@heroui/react';
 import { ChartCard } from '@/components/ChartCard';
 import { WeeklyTrendChart } from '@/components/charts/WeeklyTrendChart';
 import { DataLoadError } from '@/components/DataLoadError';
+import { DriveReplay } from '@/components/DriveReplay';
 import { CalendarIcon } from '@/components/Icons';
 import { HeaderPill, PageHeader } from '@/components/PageHeader';
 import { Section } from '@/components/Section';
@@ -73,6 +74,8 @@ export default function Trips({ loaderData }: Route.ComponentProps) {
       <ChartCard hint="최근 6주 합계" label="주간 추이" unit="km" value={weeklyTotalKm.toFixed(0)}>
         <WeeklyTrendChart data={weeklyTrend} />
       </ChartCard>
+
+      <DriveReplay />
 
       <Section description="최신순" title="일별 기록">
         {/*
