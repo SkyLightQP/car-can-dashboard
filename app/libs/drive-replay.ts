@@ -4,6 +4,8 @@ export type ReplayRange = 'last' | 'today';
 
 export const REPLAY_SPEEDS = [1, 4, 16] as const;
 
+export type ReplaySpeed = (typeof REPLAY_SPEEDS)[number];
+
 const MIN_SESSION_MS = 1000;
 const MINUTE_MS = 60_000;
 
