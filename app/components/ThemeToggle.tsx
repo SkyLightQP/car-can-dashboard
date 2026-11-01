@@ -7,7 +7,6 @@ export function ThemeToggle({ className }: { className?: string }) {
   const isHydrated = useIsHydrated();
   const { resolvedTheme, setTheme } = useTheme('light');
 
-  // 하이드레이션 전에는 서버 마크업과 동일하게 라이트 상태로 그려 불일치를 피한다.
   const showDark = isHydrated && resolvedTheme === 'dark';
 
   return (

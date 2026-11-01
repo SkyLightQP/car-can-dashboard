@@ -5,7 +5,8 @@ import { WeeklyTrendChart } from '@/components/charts/WeeklyTrendChart';
 import { DataLoadError } from '@/components/DataLoadError';
 import { DriveReplay } from '@/components/DriveReplay';
 import { CalendarIcon } from '@/components/Icons';
-import { HeaderPill, PageHeader } from '@/components/PageHeader';
+import { HeaderPill } from '@/components/HeaderPill';
+import { PageHeader } from '@/components/PageHeader';
 import { Section } from '@/components/Section';
 import { StatCard } from '@/components/StatCard';
 import { collectorContext } from '@/libs/collector-client.server';
@@ -78,11 +79,6 @@ export default function Trips({ loaderData }: Route.ComponentProps) {
       <DriveReplay />
 
       <Section description="최신순" title="일별 기록">
-        {/*
-          Table 기본값인 variant="primary" 는 회색 컨테이너 안에 흰 본문 카드를 넣는 형태라,
-          Card 로 한 번 더 감싸면 흰색 → 회색 → 흰색 3중 면이 된다.
-          Card 를 유일한 면으로 두고 표는 secondary(배경 없는 납작한 형태)로 쓴다.
-        */}
         <Card className="p-3">
           <Table variant="secondary">
             <Table.ScrollContainer>

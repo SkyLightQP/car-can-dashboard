@@ -1,28 +1,12 @@
 import { Card, Chip, Meter } from '@heroui/react';
 
+import { MissingBatteryGauge } from '@/components/MissingBatteryGauge';
 import { formatKstDateTime } from '@/libs/datetime';
 import { statusChipColor, statusLabel } from '@/libs/status';
 import type { BatteryReading } from '@/types/dashboard';
 
 const MIN_VOLTAGE = 11.5;
 const MAX_VOLTAGE = 15;
-
-function MissingBatteryGauge() {
-  return (
-    <Card className="flex flex-col gap-6 p-6">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex flex-col gap-1.5">
-          <span className="text-[13px] text-[var(--muted)]">현재 전압</span>
-          <span className="text-4xl font-semibold tracking-tight">-</span>
-        </div>
-        <Chip color="default" size="md" variant="soft">
-          <Chip.Label>미수신</Chip.Label>
-        </Chip>
-      </div>
-      <p className="text-xs text-[var(--muted)]">아직 수신된 배터리 전압이 없습니다.</p>
-    </Card>
-  );
-}
 
 export function BatteryGauge({ reading }: { reading: BatteryReading | null }) {
   if (!reading) return <MissingBatteryGauge />;

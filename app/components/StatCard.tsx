@@ -11,7 +11,6 @@ interface StatCardProps {
   hint?: string;
   changePct?: number;
   icon?: ReactNode;
-  /** 값을 더 크게 — 페이지의 대표 지표에만 쓴다. */
   size?: 'md' | 'lg';
   className?: string;
 }

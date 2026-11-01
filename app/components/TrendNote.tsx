@@ -2,17 +2,11 @@ import { TrendDownIcon, TrendUpIcon } from '@/components/Icons';
 import { cn } from '@/libs/utils';
 
 interface TrendNoteProps {
-  /** 증감률(%). 생략하면 아이콘 없이 설명만 나온다. */
   changePct?: number;
-  /** 증감률 옆에 붙는 짧은 설명. */
   note?: string;
   className?: string;
 }
 
-/**
- * 참조 디자인의 "+10.5% Balance increase, good progress." 한 줄.
- * 작은 원형 아이콘 + 굵은 수치 + 흐린 설명 순서로 읽히게 한다.
- */
 export function TrendNote({ changePct, note, className }: TrendNoteProps) {
   const hasChange = typeof changePct === 'number';
   const isUp = hasChange && changePct >= 0;

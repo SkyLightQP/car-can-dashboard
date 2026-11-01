@@ -6,7 +6,6 @@ import { cn } from '@/libs/utils';
 
 interface ChartCardProps {
   label: string;
-  /** 차트 위에 크게 얹히는 대표 값. 없으면 라벨만 나온다. */
   value?: string;
   unit?: string;
   changePct?: number;
@@ -15,7 +14,6 @@ interface ChartCardProps {
   className?: string;
 }
 
-/** 참조 디자인의 "라벨 → 큰 수치 → 증감 한 줄 → 차트" 순서를 그대로 쓰는 차트 카드. */
 export function ChartCard({ label, value, unit, changePct, hint, children, className }: ChartCardProps) {
   return (
     <Card className={cn('gap-0 p-5', className)}>

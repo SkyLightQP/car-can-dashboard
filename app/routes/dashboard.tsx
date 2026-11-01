@@ -1,22 +1,21 @@
 import { Card } from '@heroui/react';
-import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 
 import { ChartCard } from '@/components/ChartCard';
 import { DailyDistanceChart } from '@/components/charts/DailyDistanceChart';
 import { DailySpeedChart } from '@/components/charts/DailySpeedChart';
 import { DataLoadError } from '@/components/DataLoadError';
-import { ArrowRightIcon, BatteryIcon, CalendarIcon, CarIcon, RouteIcon, WrenchIcon } from '@/components/Icons';
+import { HeaderPill } from '@/components/HeaderPill';
+import { ArrowRightIcon, BatteryIcon, CalendarIcon, RouteIcon } from '@/components/Icons';
 import { MaintenanceAlertList } from '@/components/MaintenanceAlertList';
-import { HeaderPill, PageHeader } from '@/components/PageHeader';
+import { OdometerCard } from '@/components/OdometerCard';
+import { PageHeader } from '@/components/PageHeader';
 import { Section } from '@/components/Section';
 import { StatCard } from '@/components/StatCard';
-import { TrendNote } from '@/components/TrendNote';
 import { collectorContext } from '@/libs/collector-client.server';
 import { formatKstDate, formatKstDateTime, kstDateRangeEndingToday } from '@/libs/datetime';
 import { toMaintenanceAlerts } from '@/libs/maintenance';
 import { summarizeRecentWeek, toDailyTripPoints } from '@/libs/trip-stats';
-import { cn } from '@/libs/utils';
 import { toBatteryReading } from '@/libs/vehicle-readings';
 import { useVehicleProfile } from '@/libs/vehicle-profile';
 import type { BatteryReading } from '@/types/dashboard';
@@ -60,73 +59,6 @@ export function ErrorBoundary() {
 function batteryHint(battery: BatteryReading | null): string {
   if (!battery) return '전압 미수신';
   return battery.engineOn ? '시동 중 충전 전압' : '12.2V 미만이면 점검 권장';
-}
-
-function distanceTrendNote(changePct: number | null): string {
-  if (changePct === null) return '직전 7일과 비교할 주행 기록이 없습니다';
-  return changePct >= 0 ? '직전 7일 대비 주행량이 늘었습니다' : '직전 7일 대비 주행량이 줄었습니다';
-}
-
-/** 카드 안에서 버튼처럼 보이는 링크. button 안에 a 를 넣지 않으려고 Button 대신 쓴다. */
-function PillLink({ to, children }: { to: string; children: ReactNode }) {
-  return (
-    <Link
-      className="flex h-9 items-center gap-1.5 rounded-full bg-[var(--foreground)]/[0.06] px-4 text-xs font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--foreground)]/[0.11] focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:outline-none"
-      to={to}
-    >
-      {children}
-    </Link>
-  );
-}
-
-/** 참조 디자인의 잔액 카드 자리. 이 대시보드에서는 누적 주행거리가 그 역할을 한다. */
-function OdometerCard({
-  model,
-  odometerKm,
-  distanceChangePct,
-  className,
-}: {
-  model: string;
-  odometerKm: number | null;
-  distanceChangePct: number | null;
-  className?: string;
-}) {
-  return (
-    <Card className={cn('gap-0 p-6', className)}>
-      <div className="flex items-start justify-between gap-3">
-        <span className="text-[13px] text-[var(--muted)]">총 주행거리</span>
-        <span className="text-xs font-medium text-[var(--muted)]">{model}</span>
-      </div>
-
-      <div className="mt-3 flex items-baseline gap-2">
-        <span className="text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
-          {odometerKm === null ? '-' : Math.round(odometerKm).toLocaleString('ko-KR')}
-        </span>
-        <span className="text-base text-[var(--muted)]">km</span>
-      </div>
-
-      <TrendNote
-        changePct={distanceChangePct ?? undefined}
-        className="mt-3"
-        note={distanceTrendNote(distanceChangePct)}
-      />
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        <PillLink to="/vehicle">
-          <CarIcon className="size-4" />
-          차량 상태
-        </PillLink>
-        <PillLink to="/trips">
-          <RouteIcon className="size-4" />
-          주행 기록
-        </PillLink>
-        <PillLink to="/maintenance">
-          <WrenchIcon className="size-4" />
-          정비
-        </PillLink>
-      </div>
-    </Card>
-  );
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {

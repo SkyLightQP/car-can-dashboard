@@ -13,7 +13,6 @@ import {
 } from '@/components/charts/chart-theme';
 import type { DailyTrip } from '@/types/dashboard';
 
-/** recharts 의 payload 는 any 라서, 이 차트가 실제로 읽는 필드만 좁혀 둔다. */
 interface DistanceBarProps extends Omit<BarShapeProps, 'payload'> {
   payload?: DailyTrip;
 }
@@ -21,7 +20,6 @@ interface DistanceBarProps extends Omit<BarShapeProps, 'payload'> {
 export function DailyDistanceChart({ data }: { data: DailyTrip[] }) {
   const peak = data.length ? Math.max(...data.map((trip) => trip.distanceKm)) : 0;
 
-  // 최댓값 하루만 프라이머리로 세우고 나머지는 중성색으로 눕힌다.
   const renderBar = ({ payload, ...rest }: DistanceBarProps) => (
     <Rectangle {...rest} fill={barFill(peak > 0 && payload?.distanceKm === peak)} radius={[8, 8, 8, 8]} />
   );
