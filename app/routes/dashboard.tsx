@@ -68,15 +68,10 @@ function distanceTrendNote(changePct: number | null): string {
 }
 
 /** 카드 안에서 버튼처럼 보이는 링크. button 안에 a 를 넣지 않으려고 Button 대신 쓴다. */
-function PillLink({ to, children, isPrimary }: { to: string; children: ReactNode; isPrimary?: boolean }) {
+function PillLink({ to, children }: { to: string; children: ReactNode }) {
   return (
     <Link
-      className={cn(
-        'flex h-9 items-center gap-1.5 rounded-full px-4 text-xs font-medium transition-colors',
-        isPrimary
-          ? 'bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent-hover)]'
-          : 'bg-[var(--surface)] text-[var(--foreground)] shadow-[var(--surface-shadow)] hover:bg-[var(--surface-hover)]'
-      )}
+      className="flex h-9 items-center gap-1.5 rounded-full bg-[var(--foreground)]/[0.06] px-4 text-xs font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--foreground)]/[0.11] focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:outline-none"
       to={to}
     >
       {children}
@@ -100,9 +95,7 @@ function OdometerCard({
     <Card className={cn('gap-0 p-6', className)}>
       <div className="flex items-start justify-between gap-3">
         <span className="text-[13px] text-[var(--muted)]">총 주행거리</span>
-        <span className="rounded-full bg-[var(--foreground)]/[0.04] px-3 py-1 text-xs font-medium text-[var(--muted)]">
-          {model}
-        </span>
+        <span className="text-xs font-medium text-[var(--muted)]">{model}</span>
       </div>
 
       <div className="mt-3 flex items-baseline gap-2">
@@ -119,7 +112,7 @@ function OdometerCard({
       />
 
       <div className="mt-6 flex flex-wrap gap-2">
-        <PillLink isPrimary to="/vehicle">
+        <PillLink to="/vehicle">
           <CarIcon className="size-4" />
           차량 상태
         </PillLink>
