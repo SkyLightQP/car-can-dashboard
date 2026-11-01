@@ -67,3 +67,28 @@ export function formatGapLabel(gapMs: number): string {
   }
   return minutes === 0 ? `${hours}시간` : `${hours}시간 ${minutes}분`;
 }
+
+export const SPEED_PATH_WIDTH = 1000;
+export const SPEED_PATH_HEIGHT = 100;
+
+export function replaySpeedCeilingKph(sessions: DriveReplay): number {
+  const peak = sessions.reduce(
+    (max, session) => session.points.reduce((sessionMax, point) => Math.max(sessionMax, point.speedKph), max),
+    0
+  );
+  return Math.max(peak, 40);
+}
+
+export function speedAreaPath(session: DriveReplaySession, ceilingKph: number): string {
+  const startMs = Date.parse(session.startedAt);
+  const durationMs = replayDurationMs(session);
+  const toX = (t: number) => (Math.min(Math.max((t - startMs) / durationMs, 0), 1) * SPEED_PATH_WIDTH).toFixed(1);
+  const toY = (kph: number) =>
+    (SPEED_PATH_HEIGHT - Math.min(Math.max(kph / ceilingKph, 0), 1) * SPEED_PATH_HEIGHT).toFixed(1);
+
+  const line = session.points.map((point) => `L${toX(point.t)},${toY(point.speedKph)}`).join('');
+  const firstX = session.points.length > 0 ? toX(session.points[0].t) : '0';
+  const lastX = session.points.length > 0 ? toX(session.points[session.points.length - 1].t) : '0';
+
+  return `M${firstX},${SPEED_PATH_HEIGHT}${line}L${lastX},${SPEED_PATH_HEIGHT}Z`;
+}
