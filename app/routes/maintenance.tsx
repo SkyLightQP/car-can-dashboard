@@ -4,11 +4,10 @@ import { DataLoadError } from '@/components/DataLoadError';
 import { MaintenanceAlertList } from '@/components/MaintenanceAlertList';
 import { MaintenanceRecordList } from '@/components/MaintenanceRecordList';
 import { MaintenanceRecordModal } from '@/components/MaintenanceRecordModal';
-import { MaintenanceScheduleSettings } from '@/components/MaintenanceScheduleSettings';
 import { PageHeader } from '@/components/PageHeader';
 import { Section } from '@/components/Section';
 import { collectorContext } from '@/libs/collector-client.server';
-import { formatKm, type MaintenanceIntent, sortByMaintenanceType, toMaintenanceAlerts } from '@/libs/maintenance';
+import { formatKm, type MaintenanceIntent, toMaintenanceAlerts } from '@/libs/maintenance';
 import { runMaintenanceIntent } from '@/libs/maintenance-actions.server';
 
 import type { Route } from './+types/maintenance';
@@ -19,17 +18,15 @@ export function meta(_: Route.MetaArgs) {
 
 export async function loader({ context }: Route.LoaderArgs) {
   const collector = context.get(collectorContext);
-  const [alerts, records, schedules] = await Promise.all([
+  const [alerts, records] = await Promise.all([
     collector.maintenance.alerts.query(),
     collector.maintenance.records.list.query(),
-    collector.maintenance.schedules.list.query(),
   ]);
 
   return {
     currentOdometerKm: alerts.currentOdometerKm,
     alerts: toMaintenanceAlerts(alerts),
     records,
-    schedules: sortByMaintenanceType(schedules),
   };
 }
 
@@ -43,7 +40,7 @@ export function ErrorBoundary() {
 }
 
 export default function Maintenance({ loaderData }: Route.ComponentProps) {
-  const { currentOdometerKm, alerts, records, schedules } = loaderData;
+  const { currentOdometerKm, alerts, records } = loaderData;
 
   return (
     <div className="flex flex-col gap-6">
@@ -70,10 +67,6 @@ export default function Maintenance({ loaderData }: Route.ComponentProps) {
         ) : (
           <MaintenanceRecordList defaultOdometerKm={currentOdometerKm} records={records} />
         )}
-      </Section>
-
-      <Section title="정비 주기 설정">
-        <MaintenanceScheduleSettings schedules={schedules} />
       </Section>
     </div>
   );

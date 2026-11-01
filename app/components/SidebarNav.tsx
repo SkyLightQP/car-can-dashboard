@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from 'react';
 import { NavLink } from 'react-router';
 
-import { CarIcon, GaugeIcon, RouteIcon, WrenchIcon } from '@/components/Icons';
+import { CarIcon, GaugeIcon, RouteIcon, SlidersIcon, WrenchIcon } from '@/components/Icons';
 import { cn } from '@/libs/utils';
 
 interface NavItem {
@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { to: '/vehicle', label: '차량 상태', Icon: CarIcon },
   { to: '/trips', label: '주행 기록', Icon: RouteIcon },
   { to: '/maintenance', label: '정비', Icon: WrenchIcon },
+  { to: '/settings', label: '설정', Icon: SlidersIcon },
 ];
 
 interface SidebarNavProps {

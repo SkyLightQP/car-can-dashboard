@@ -1,16 +1,16 @@
 import { Card } from '@heroui/react';
-import { Link } from 'react-router';
 
 import { ChartCard } from '@/components/ChartCard';
 import { DailyDistanceChart } from '@/components/charts/DailyDistanceChart';
 import { DailySpeedChart } from '@/components/charts/DailySpeedChart';
 import { DataLoadError } from '@/components/DataLoadError';
 import { HeaderPill } from '@/components/HeaderPill';
-import { ArrowRightIcon, BatteryIcon, CalendarIcon, RouteIcon } from '@/components/Icons';
+import { BatteryIcon, CalendarIcon, RouteIcon } from '@/components/Icons';
 import { MaintenanceAlertList } from '@/components/MaintenanceAlertList';
 import { OdometerCard } from '@/components/OdometerCard';
 import { PageHeader } from '@/components/PageHeader';
 import { Section } from '@/components/Section';
+import { SectionLink } from '@/components/SectionLink';
 import { StatCard } from '@/components/StatCard';
 import { collectorContext } from '@/libs/collector-client.server';
 import { formatKstDate, formatKstDateTime, kstDateRangeEndingToday } from '@/libs/datetime';
@@ -151,15 +151,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       </div>
 
       <Section
-        action={
-          <Link
-            className="flex items-center gap-1 rounded-full bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] shadow-[var(--surface-shadow)] transition-colors hover:text-[var(--foreground)]"
-            to="/maintenance"
-          >
-            전체 보기
-            <ArrowRightIcon className="size-3.5" />
-          </Link>
-        }
+        action={<SectionLink to="/maintenance">전체 보기</SectionLink>}
         description="예정된 정비 항목"
         title="정비 알림"
       >

@@ -19,7 +19,7 @@ export function MaintenanceScheduleRow({ schedule }: { schedule: MaintenanceSche
 
   const handleSave = () => {
     const payload: MaintenanceIntent = { intent: 'updateSchedule', schedule: draft };
-    void fetcher.submit(payload, { method: 'post', encType: 'application/json', action: '/maintenance' });
+    void fetcher.submit(payload, { method: 'post', encType: 'application/json', action: '/settings' });
   };
 
   return (

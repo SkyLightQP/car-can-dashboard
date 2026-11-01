@@ -9,5 +9,6 @@ export default [
     route('trips', 'routes/trips.tsx'),
     route('trips/replay', 'routes/trips.replay.ts'),
     route('maintenance', 'routes/maintenance.tsx'),
+    route('settings', 'routes/settings.tsx'),
   ]),
 ] satisfies RouteConfig;
