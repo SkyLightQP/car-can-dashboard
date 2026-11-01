@@ -8,7 +8,12 @@ export function MaintenanceRecordDeleteDialog({ record }: { record: MaintenanceR
 
   return (
     <>
-      <Button onPress={state.open} size="sm" variant="tertiary">
+      <Button
+        className="h-8 min-w-0 px-2.5 text-xs text-[var(--muted)] hover:text-[var(--danger)]"
+        onPress={state.open}
+        size="sm"
+        variant="ghost"
+      >
         삭제
       </Button>
       <AlertDialog.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>

@@ -1,6 +1,7 @@
 import type {
   CreateMaintenanceRecordInput,
   MaintenanceAlerts,
+  MaintenanceRecordView,
   MaintenanceType,
   UpdateMaintenanceRecordInput,
   UpdateMaintenanceScheduleInput,
@@ -28,6 +29,33 @@ export const maintenanceTypes = Object.keys(maintenanceTypeLabels) as Maintenanc
 
 export function formatKm(km: number): string {
   return `${km.toLocaleString('ko-KR')}km`;
+}
+
+export function formatMonthDay(isoDate: string): string {
+  const [, month, day] = isoDate.split('-');
+  return `${Number(month)}월 ${Number(day)}일`;
+}
+
+export function describeRecordDetails(record: MaintenanceRecordView): string {
+  const typeLabel = maintenanceTypeLabels[record.type];
+  const parts = [
+    record.type !== 'other' && typeLabel !== record.item ? typeLabel : null,
+    record.odometerKm > 0 ? formatKm(record.odometerKm) : null,
+    record.costKrw > 0 ? `${record.costKrw.toLocaleString('ko-KR')}원` : null,
+    record.note.trim() || null,
+  ];
+  return parts.filter((part) => part !== null).join(' · ');
+}
+
+export function groupRecordsByYear(records: MaintenanceRecordView[]) {
+  const groups: { year: string; records: MaintenanceRecordView[] }[] = [];
+  for (const record of records) {
+    const year = record.performedOn.slice(0, 4);
+    const last = groups.at(-1);
+    if (last?.year === year) last.records.push(record);
+    else groups.push({ year, records: [record] });
+  }
+  return groups;
 }
 
 function typeOrder(type: MaintenanceType): number {

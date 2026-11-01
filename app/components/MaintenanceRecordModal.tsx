@@ -15,7 +15,7 @@ export function MaintenanceRecordModal({ record, defaultOdometerKm }: Maintenanc
   return (
     <Modal state={state}>
       {record ? (
-        <Button size="sm" variant="tertiary">
+        <Button className="h-8 min-w-0 px-2.5 text-xs text-[var(--muted)]" size="sm" variant="ghost">
           수정
         </Button>
       ) : (
