@@ -98,7 +98,7 @@ export function DriveReplay() {
         </Card>
       ) : !frame ? (
         <Card className="p-3">
-          <EmptyState className="py-10 text-sm text-[var(--muted)]">{EMPTY_MESSAGES[loaded.range]}</EmptyState>
+          <EmptyState className="py-4 text-sm text-[var(--muted)]">{EMPTY_MESSAGES[loaded.range]}</EmptyState>
         </Card>
       ) : (
         <Card className="gap-6 p-5">
