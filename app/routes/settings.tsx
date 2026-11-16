@@ -44,7 +44,7 @@ export default function Settings({ loaderData }: Route.ComponentProps) {
         <MaintenanceScheduleSettings schedules={loaderData.schedules} />
       </Section>
 
-      <Section action={<ApiKeyCreateModal />} description="ESP32 장치 인증 (X-Api-Key 헤더)" title="API 키">
+      <Section action={<ApiKeyCreateModal />} title="API 키">
         <ApiKeySettings apiKeys={loaderData.apiKeys} />
       </Section>
     </div>
