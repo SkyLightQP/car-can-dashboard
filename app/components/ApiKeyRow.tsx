@@ -9,9 +9,7 @@ export function ApiKeyRow({ apiKey }: { apiKey: ApiKeyView }) {
         <span className="truncate text-sm font-medium" title={apiKey.name}>
           {apiKey.name}
         </span>
-        <span className="truncate text-xs text-[var(--muted)]">
-          <code className="font-mono">{apiKey.prefix}…</code> · {formatKstDate(apiKey.createdAt)} 생성
-        </span>
+        <span className="truncate text-xs text-[var(--muted)]">{formatKstDate(apiKey.createdAt)} 생성</span>
       </div>
       <div className="flex shrink-0 items-center">
         <ApiKeyDeleteDialog apiKey={apiKey} />
