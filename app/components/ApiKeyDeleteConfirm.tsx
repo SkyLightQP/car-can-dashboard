@@ -25,10 +25,7 @@ export function ApiKeyDeleteConfirm({ apiKey, onDone }: { apiKey: ApiKeyView; on
         <AlertDialog.Heading>API 키를 삭제할까요?</AlertDialog.Heading>
       </AlertDialog.Header>
       <AlertDialog.Body>
-        <p>
-          {apiKey.name} (<code className="font-mono">{apiKey.prefix}…</code>) 키를 삭제합니다. 이 키를 쓰는 장치는 바로
-          데이터 전송을 거부당합니다.
-        </p>
+        <p>{apiKey.name} 키를 삭제합니다.</p>
         {result && !result.ok ? <p className="mt-2 text-sm text-[var(--danger)]">{result.error}</p> : null}
       </AlertDialog.Body>
       <AlertDialog.Footer>
