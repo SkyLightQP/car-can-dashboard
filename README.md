@@ -22,6 +22,8 @@
 | `VEHICLE_RECOMMENDED_TIRE_PSI` | 타이어 권장 공기압(psi). 기본값: 35                                                                                                |
 | `PORT`                         | 선택                                                                                                                               |
 
+`DASHBOARD_ORIGIN`은 collector `.env`의 `DASHBOARD_URL`과 같은 origin이어야 하고, collector `TRUSTED_ORIGINS`에도 들어 있어야 MCP OAuth 로그인/동의 페이지가 동작합니다.
+
 ## 시작하기
 
 ```bash
