@@ -14,6 +14,10 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: '로그인 | 차량 대시보드' }];
 }
 
+export function headers(_: Route.HeadersArgs) {
+  return { 'X-Frame-Options': 'DENY', 'Content-Security-Policy': "frame-ancestors 'none'" };
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
   const oauthQuery = readSignedOAuthQuery(request.url);
   if (!oauthQuery) throw redirect('/');
