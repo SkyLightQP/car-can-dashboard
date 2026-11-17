@@ -45,6 +45,21 @@ async function readRedirect(response: Response | null): Promise<OAuthRedirect> {
   return { ok: true, url: body.url };
 }
 
+async function readSessionRedirect(response: Response | null): Promise<OAuthRedirect> {
+  const redirect = await readRedirect(response);
+  if (!redirect.ok) return redirect;
+
+  try {
+    const target = new URL(redirect.url);
+    if (target.origin === new URL(DASHBOARD_ORIGIN).origin && target.pathname === '/oauth/login') {
+      return { ok: false, reason: 'invalid' };
+    }
+  } catch {
+    return redirect;
+  }
+  return redirect;
+}
+
 export function readSignedOAuthQuery(requestUrl: string): string | null {
   const { searchParams, search } = new URL(requestUrl);
   return searchParams.has('sig') ? search.slice(1) : null;
@@ -76,7 +91,7 @@ export async function resumeAuthorize(token: string, oauthQuery: string): Promis
     headers: oauthHeaders(token),
   }).catch(() => null);
 
-  return readRedirect(response);
+  return readSessionRedirect(response);
 }
 
 export async function submitConsent(token: string, accept: boolean, oauthQuery: string): Promise<OAuthRedirect> {
@@ -86,7 +101,7 @@ export async function submitConsent(token: string, accept: boolean, oauthQuery: 
     body: JSON.stringify({ accept, oauth_query: oauthQuery }),
   }).catch(() => null);
 
-  return readRedirect(response);
+  return readSessionRedirect(response);
 }
 
 export async function getClientName(token: string, clientId: string): Promise<string> {
