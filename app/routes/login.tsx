@@ -61,7 +61,7 @@ export default function Login() {
           <Card.Description className="text-sm text-[var(--muted)]">계정 정보를 입력해 주세요.</Card.Description>
         </Card.Header>
         <Card.Content>
-          <Form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <Form className="flex flex-col gap-4" method="post" onSubmit={handleSubmit}>
             <TextField autoComplete="email" isRequired name="email" type="email" validate={validateEmail}>
               <Label>이메일</Label>
               <Input />
