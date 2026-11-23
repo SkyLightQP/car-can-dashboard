@@ -36,9 +36,6 @@ export function OAuthConnectionRevokeConfirm({
       </AlertDialog.Header>
       <AlertDialog.Body>
         <p>{oauthConnectionName(connection)} 앱의 권한을 취소합니다.</p>
-        <p className="mt-2 text-sm text-[var(--muted)]">
-          다시 연결하려면 그 앱에서 로그인과 동의를 처음부터 다시 해야 합니다.
-        </p>
         {result && !result.ok ? <p className="mt-2 text-sm text-[var(--danger)]">{result.error}</p> : null}
       </AlertDialog.Body>
       <AlertDialog.Footer>
